@@ -7,14 +7,25 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/secondRecyclerView"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="200dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01"
+        app:layout_constraintTop_toBottomOf="@+id/recipeTypeGroupText"
         tools:listitem="@layout/recipe_item" />
+
+    <TextView
+        android:id="@+id/recipeTypeGroupText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="Végé"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/secondRecyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

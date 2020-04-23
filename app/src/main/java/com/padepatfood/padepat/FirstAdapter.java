@@ -40,8 +40,7 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),LinearLayoutManager.HORIZONTAL,false));
 
-        /*holder.recipeName.setText(recipe.getName());
-        //holder.recipeImage.setImageResource(recipe.getImgUrl());*/
+        holder.recipeTypeName.setText(recipeType.stringType);
 
     }
 
@@ -51,13 +50,11 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
     }
 
     class ViewHolder extends  RecyclerView.ViewHolder{
-        /*final TextView recipeName;
-        final ImageView recipeImage;*/
+        final TextView recipeTypeName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            /*this.recipeImage =  itemView.findViewById(R.id.recipeImg);
-            this.recipeName = itemView.findViewById(R.id.recipeName);*/
+            this.recipeTypeName =  itemView.findViewById(R.id.recipeTypeGroupText);
         }
     }
 }
