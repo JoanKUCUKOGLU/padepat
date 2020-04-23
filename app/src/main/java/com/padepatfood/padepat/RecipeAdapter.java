@@ -1,12 +1,10 @@
 package com.padepatfood.padepat;
 
 import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,7 +34,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         final Recipe recipe = recipes.get(position);
 
         holder.recipeName.setText(recipe.getName());
-        Picasso.get().load(recipe.getImgUrl()).fit().centerCrop().error(R.drawable.logopadepat).into(holder.recipeImage);
+        Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(holder.recipeImage);
         Picasso.get().setLoggingEnabled(true);
 
         holder.recipeImage.setOnClickListener(new View.OnClickListener() {
