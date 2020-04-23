@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,13 +22,22 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        List<Recipe> recipeList = JsonDecoder.getRecipesFromJson(this);
-
-        adapter = new FirstAdapter(recipeList);//Get a list of questions for the adaptater
+        adapter = new FirstAdapter(Arrays.asList(RecipeType.values()));//Get a list of questions for the adaptater
         recyclerView = findViewById(R.id.firstRecyclerView);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
+    public enum RecipeType {
+        Vege("végétarien"),
+        Classic("classique");
+
+        public String stringType;
+        RecipeType(String type) {
+            this.stringType = type;
+        }
+    }
 }
+

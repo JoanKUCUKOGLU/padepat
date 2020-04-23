@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder>  {
-    private List<Recipe> recipes;
-    public FirstAdapter(List<Recipe> recipes) {
-        this.recipes = recipes;
+    private List<MainActivity.RecipeType> recipeTypes;
+    public FirstAdapter(List<MainActivity.RecipeType> recipeTypes) {
+        this.recipeTypes = recipeTypes;
     }
 
     @NonNull
@@ -28,9 +28,11 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull FirstAdapter.ViewHolder holder, int position) {
-        //final Recipe recipe = recipes.get(position);
+        final MainActivity.RecipeType recipeType = recipeTypes.get(position);
         RecipeAdapter adapter;
         RecyclerView recyclerView;
+        DataManipulation dm = new DataManipulation(holder.itemView.getContext());
+        List<Recipe> recipes = dm.getRecipesByType(recipeType.stringType);
 
         adapter = new RecipeAdapter(recipes);//Get a list of questions for the adaptater
         recyclerView = holder.itemView.findViewById(R.id.secondRecyclerView);
@@ -45,7 +47,7 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return recipes.size();
+        return recipeTypes.size();
     }
 
     class ViewHolder extends  RecyclerView.ViewHolder{

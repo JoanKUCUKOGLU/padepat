@@ -1,6 +1,7 @@
 [
     {
         "name":"Gratin de pâtes au jambon et petits pois",
+        "type" : "classique",
         "price": 10,
         "ingredients":["400 g de pâtes au choix",
         "150 g de petits pois",
@@ -15,6 +16,7 @@
     {
         "name":"Quiche aux tomates",
         "price": 10,
+        "type": "végétarien",
         "ingredients":[
             "650 g de tomates soit 5",
             "230 g de pâte brisée soit 1 rouleau",
@@ -30,6 +32,7 @@
     {
         "name":"Pot-au-feu facile",
         "price": 25,
+        "type" : "classique",
         "ingredients":[ "1,50 kg de carottes",
             "1,20 kg d'os de moelle soit 6",
             "1,20 kg de poireaux",
@@ -51,6 +54,7 @@
     {
         "name":"Omelette au jambon et fromage",
         "price": 10,
+        "type" : "classique",
         "ingredients":[
             "300 g d'oeufs soit 6",
             "80 g de jambon blanc soit 2 tranches",
@@ -65,6 +69,7 @@
     {
         "name":"Gratin de chou-fleur et pommes de terre au Comté",
         "price": 15,
+        "type": "classique",
         "ingredients":[
             "50 g d'oeuf soit 1",
             "450 g de pommes de terre",
@@ -79,6 +84,7 @@
     {
         "name":"Blanquette de dinde",
         "price": 6,
+        "type": "classique",
         "ingredients":[
             "200gr de dinde coupée en cubes",
             "2 pommes de terre moyennes",
@@ -95,6 +101,7 @@
     {
         "name":"Risotto au Chorizo",
         "price": 10,
+        "type": "classique",
         "ingredients":[
             "2 verres à moutarde de riz pour risotto ou riz rond",
             "1 cube de bouillon de poule",
@@ -112,6 +119,7 @@
     {
         "name":"Poulet au curry",
         "price": 10,
+        "type": "classique",
         "ingredients":[
             "2 blancs de poulet",
             "1 oignon jaune",
@@ -125,6 +133,7 @@
     {
         "name":"Pavé au saumon",
         "price": 15,
+        "type" : "classique",
         "ingredients":[
             "2 petits pavés de saumon",
             "1 cuillère à soupe d’huile d’olive",
@@ -138,6 +147,7 @@
     {
         "name":"Croque Monsieur",
         "price": 10,
+        "type" : "classique",
         "ingredients":[
             "4 tranches de pain de mie",
             "25gr de beurre",
@@ -154,6 +164,7 @@
     {
         "name":"Tomates farcies",
         "price": 15,
+        "type" : "classique",
         "ingredients":[
             "250gr de chair à saucisses",
             "2 tomates",
@@ -170,6 +181,7 @@
     {
         "name":"Wok de légumes",
         "price": 10,
+        "type" : "végetarien",
         "ingredients":[
             "100gr de haricots verts",
             "50gr de petits pois",
@@ -185,6 +197,7 @@
     {
         "name":"Soupe de carottes aux lentilles",
         "price": 10,
+        "type": "végétarien",
         "ingredients":[
             "400gr de carottes",
             "100gr de lentilles corail",
