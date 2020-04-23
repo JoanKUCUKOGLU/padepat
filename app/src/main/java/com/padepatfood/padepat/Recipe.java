@@ -19,7 +19,7 @@ public class Recipe implements Parcelable {
         this.price = price;
         this.ingredients = ingredients;
         this.steps = steps;
-        this.imgUrl = imgUrl;
+        this.img = img;
         this.type = type;
     }
 
@@ -100,12 +100,12 @@ public class Recipe implements Parcelable {
         this.steps = steps;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImg() {
+        return img;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getType() {
