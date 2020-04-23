@@ -1,5 +1,6 @@
 package com.padepatfood.padepat;
 
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -29,12 +32,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecipeAdapter.ViewHolder holder, int position) {
         final Recipe recipe = recipes.get(position);
 
         holder.recipeName.setText(recipe.getName());
-        //holder.recipeImage.setImageResource(recipe.getImgUrl());
+        Picasso.get().load(recipe.getImgUrl()).fit().centerCrop().error(R.drawable.logopadepat).into(holder.recipeImage);
+        Picasso.get().setLoggingEnabled(true);
 
+        holder.recipeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), RecipeActivity.class);
+                intent.putExtra("recipe",recipe);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
