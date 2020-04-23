@@ -8,20 +8,24 @@
 
     <ImageView
         android:id="@+id/padepatLogo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="406dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/firstRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logopadepat" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/firstRecyclerView"
-        android:layout_width="409dp"
-        android:layout_height="641dp"
-        android:layout_marginTop="1dp"
+        android:layout_width="415dp"
+        android:layout_height="577dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/padepatLogo"
         tools:listitem="@layout/second_recycler_view" />

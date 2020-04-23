@@ -44,7 +44,8 @@ public class JsonDecoder {
                         recipeObject.getInt("price"),
                         ingredientsList,
                         recipeObject.getString("steps"),
-                        recipeObject.getString("img"));
+                        recipeObject.getString("img"),
+                        recipeObject.getString("type"));
                 recipesList.add(recipe);
             } catch (JSONException e) {
                 e.printStackTrace();
