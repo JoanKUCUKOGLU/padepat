@@ -25,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-
-        //List<Recipe> recipeList = JsonDecoder.getRecipesFromJson(this);
-
         recipeList = getIntent().getParcelableArrayListExtra("recipeList");
 
         adapter = new FirstAdapter(Arrays.asList(RecipeType.values()));//Get a list of questions for the adaptater
