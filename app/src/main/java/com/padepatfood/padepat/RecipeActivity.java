@@ -20,10 +20,8 @@ public class RecipeActivity extends AppCompatActivity {
         Recipe recipe = intent.getParcelableExtra("recipe");
 
         ImageView recipeImg = findViewById(R.id.recipeImg);
-        TextView recipeTxt = findViewById(R.id.recipeText);
 
-        Picasso.get().load(recipe.getImgUrl()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
-        //recipeTxt.setText(recipe.getSteps());
+        Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
 
         LinearLayout ingredientsLinearLayout = (LinearLayout)findViewById(R.id.ingredientsLayout);
         for(String ingredient : recipe.getIngredients()){
@@ -31,6 +29,14 @@ public class RecipeActivity extends AppCompatActivity {
             ingredientText.setText(ingredient);
             ingredientText.setTextSize(24);
             ingredientsLinearLayout.addView(ingredientText);
+        }
+
+        LinearLayout stepsLinearLayout = (LinearLayout)findViewById(R.id.stepsLayout);
+        for(String step : recipe.getSteps()){
+            TextView stepText = new TextView(this);
+            stepText.setText(step);
+            stepText.setTextSize(24);
+            stepsLinearLayout.addView(stepText);
         }
     }
 }

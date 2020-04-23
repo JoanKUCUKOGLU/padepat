@@ -11,7 +11,7 @@ public class Recipe implements Parcelable {
     private Integer price;
     private List<String> ingredients;
     private List<String> steps;
-    private String imgUrl;
+    private String img;
     private String type;
 
     public Recipe(String name, Integer price, List<String> ingredients, List<String> steps, String imgUrl,String type) {
@@ -32,7 +32,7 @@ public class Recipe implements Parcelable {
         }
         ingredients = in.createStringArrayList();
         steps = in.createStringArrayList();
-        imgUrl = in.readString();
+        img = in.readString();
         type = in.readString();
     }
 
@@ -47,7 +47,7 @@ public class Recipe implements Parcelable {
         }
         dest.writeStringList(ingredients);
         dest.writeStringList(steps);
-        dest.writeString(imgUrl);
+        dest.writeString(img);
         dest.writeString(type);
     }
 
