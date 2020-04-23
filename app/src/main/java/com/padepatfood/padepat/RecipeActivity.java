@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -22,6 +23,14 @@ public class RecipeActivity extends AppCompatActivity {
         TextView recipeTxt = findViewById(R.id.recipeText);
 
         Picasso.get().load(recipe.getImgUrl()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
-        recipeTxt.setText(recipe.getSteps());
+        //recipeTxt.setText(recipe.getSteps());
+
+        LinearLayout ingredientsLinearLayout = (LinearLayout)findViewById(R.id.ingredientsLayout);
+        for(String ingredient : recipe.getIngredients()){
+            TextView ingredientText = new TextView(this);
+            ingredientText.setText(ingredient);
+            ingredientText.setTextSize(24);
+            ingredientsLinearLayout.addView(ingredientText);
+        }
     }
 }
