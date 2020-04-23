@@ -1,0 +1,199 @@
+[
+    {
+        "name":"Gratin de pâtes au jambon et petits pois",
+        "price": 10,
+        "ingredients":["400 g de pâtes au choix",
+        "150 g de petits pois",
+        "200 g de cubes de jambon",
+        "50 g de crème",
+        "15 g de fromage râpé",
+        "0,50 g sel",
+        "0,50 g Poivre"],
+        "steps":"1- Préchauffer le four à 180°C. Faire bouillir une grande casserole d'eau et mettre les pâtes et les petits pois. Faire cuire pendant 10 minutes environ. Égoutter.2- Porter la crème à ébullition avec les cubes de jambon. Ajouter ensuite les pâtes hors du feu. Saler, poivrer et bien mélanger.3- Verser la préparation dans un plat beurré et parsemer de fromage râpé. Enfourner pendant 10 minutes. Servir aussitôt.",
+        "img":"https://auchanetmoi.auchan.fr/api/v1/media_files/3587/media/798x449c"
+    },
+    {
+        "name":"Quiche aux tomates",
+        "price": 10,
+        "ingredients":[
+            "650 g de tomates soit 5",
+            "230 g de pâte brisée soit 1 rouleau",
+            "200 g d'oeufs soit 4",
+            "150 g d'emmental râpé",
+            "150 g de crème fraîche épaisse",
+            "10 cl de lait",
+            "15 g de moutarde soit 1 CàS"
+        ],
+        "steps":"1- Préchauffer le four à 180°C.2- Couper les tomates en rondelles. Dans un bol, battre les oeufs en omelette. Ajouter le lait puis saler et poivrer.3- Dans un saladier, mélanger les tomates, la crème fraîche et le fromage. Verser les oeufs battus dans la préparation et mélanger. 4- Disposer la pâte dans un moule à tarte. Piquer le fond avec une fourchette puis étaler la moutarde sur le fond de la pâte. Ajouter ensuite la préparation du saladier. 5- Enfourner la quiche aux tomates pendant 40 minutes puis déguster aussitôt.",
+        "img":"https://static.750g.com/images/600-600/364316d7306e37591e1f754ffe23a47c/tarte-a-la-tomate-et-au-chevre-boursault.jpeg"
+    },
+    {
+        "name":"Pot-au-feu facile",
+        "price": 25,
+        "ingredients":[ "1,50 kg de carottes",
+            "1,20 kg d'os de moelle soit 6",
+            "1,20 kg de poireaux",
+            "900 g de navets",
+            "600 g de paleron de boeuf",
+            "600 g de gîte",
+            "600 g de plat de côte",
+            "600 g de queue de boeuf",
+            "200 g d'oignons soit 2",
+            "60 g de céleri soit 2 branches",
+            "30 g de gros sel soit 2 CàS",
+            "25 g de poivre concassé",
+            "20 g de bouquet garni",
+            "15 g d'ail soit 3 gousses",
+            "4 g de clous de girofle soit 4"],
+        "steps":"1- Rincer et éplucher les carottes, les navets, les poireaux et le céleri. Découper ensuite les légumes en tronçons. Peler et découper les gousses d'ail en deux. Peler et découper les oignons en quatre. Piquer les oignons de clous de girofle. Saler les extrémités des os à moelle.2- Dans le fond d'une cocotte, placer les légumes et les oignons. Ajouter ensuite le paleron de boeuf, le gîte, le plat de côte, la queue de boeuf et les os à moelle. Ajouter le bouquet garni, le poivre, les gousses d'ail et le sel. Couvrir d'eau.3- Porter le mélange à ébullition à feu fort. Baisser ensuite le feu à feu doux et laisser mijoter à couvert durant 3 heures. Servir chaud. ",
+        "img":"https://cac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fcac.2F2018.2F09.2F25.2F2ef08b1d-32b3-40b3-a587-5fd89d6b603e.2Ejpeg/750x562/quality/80/crop-from/center/cr/wqkgQ2FzdGUvIFN1Y3LDqSBTYWzDqSAvIEN1aXNpbmUgQWN0dWVsbGU%3D/pot-au-feu-facile.jpeg"
+    },
+    {
+        "name":"Omelette au jambon et fromage",
+        "price": 10,
+        "ingredients":[
+            "300 g d'oeufs soit 6",
+            "80 g de jambon blanc soit 2 tranches",
+            "30 g d'emmental râpé",
+            "20 g de beurre",
+            "1 g de sel",
+            "0,50 g de poivre"
+        ],
+        "steps":"1- Découper les tranches de jambon en lanières. 2- Dans un grand bol, battre les oeufs à la fourchette. Saler, poivrer. 3- Faire fondre le beurre dans une poêle bien chaude, verser les oeufs et laisser cuire 2 minutes en remuant avec une spatule. Laisser cuire quelques minutes jusqu'à ce que les bords se décollent.4- Ajouter le jambon et le fromage râpé sur la moitié de l'omelette et rabattre l'autre moitié dessus. Laisser cuire à nouveau 2 minutes. Servir aussitôt. ",
+        "img":"https://www.aux-fourneaux.fr/wp-content/uploads/2016/05/omelette-2.jpg"
+    },
+    {
+        "name":"Gratin de chou-fleur et pommes de terre au Comté",
+        "price": 15,
+        "ingredients":[
+            "50 g d'oeuf soit 1",
+            "450 g de pommes de terre",
+            "500 g de crème fraîche",
+            "1 kg de chou-fleur soit 1",
+            "50 g de Comté",
+            "100 g de lardons"
+        ],
+        "steps":"1- Préchauffer le four à 200°C. Détacher le chou-fleur en bouquet. Éplucher les pommes de terre. 2- Faire cuire le chou-fleur et les pommes de terre à l'eau pendant 15 minutes environ. Une fois cuits, les égoutter et couper les pommes de terre en rondelles.3- Mélanger la crème et l'oeuf dans un bol. Saler et poivrer. Beurrer un plat à gratin puis disposer le chou-fleur et les rondelles de pommes de terre. Ajouter les lardons.4- Recouvrir le tout du mélange oeuf-crème. Râper le Comté et parsemer le gratin. Faire cuire au four pendant 15 minutes. Servir aussitôt. ",
+        "img":"https://recette.supertoinette.com/150899/m/gratin-de-chou-fleur-et-pommes-de-terre-au-comte.jpg"
+    },
+    {
+        "name":"Blanquette de dinde",
+        "price": 6,
+        "ingredients":[
+            "200gr de dinde coupée en cubes",
+            "2 pommes de terre moyennes",
+            "1 carotte coupée en rondelle",
+            "1/2 boite de champignons de paris",
+            "1 cube de bouillon de boeuf",
+            "1 jaune d’oeuf",
+	    "1/4 de citron",
+	    "4 cuillères à soupe de crème"
+        ],
+        "steps":"1- Dans une casserole, versez un verre d’eau avec les morceaux de dinde, les pommes de terre coupées en cubes et le cube de bouillon effrité. 2- Faire cuire 10 minutes en mélangeant de temps à autres. 3- Dans un bol, mélangez une cuillerée de crème avec un jaune d’oeuf. 4- Ajoutez à la préparation le jus de citron, 3 cuillerées de crèmes, le jaune d’oeuf et les champignons et les carottes. 5- Laissez mijoter quelques minutes. 6- Servez avec un peu de riz",
+        "img":"https://media.discordapp.net/attachments/701697661601972325/702555309838958653/maxresdefault.png"
+    },
+    {
+        "name":"Risotto au Chorizo",
+        "price": 10,
+        "ingredients":[
+            "2 verres à moutarde de riz pour risotto ou riz rond",
+            "1 cube de bouillon de poule",
+            "1 cuillère à soupe de crème épaisse",
+            "1 échalote",
+            "1/2 sachet de parmesan",
+            "5 tranches de chorizo",
+	    "1 cuillère à soupe d’huile d’olive",
+	    "1 pincée de paprika",
+	    "poivre et sel"
+        ],
+        "steps":"1- Dans une casserole, faites bouillir 1.5L d’eau puis rajoutez les 2 cubes de bouillon 2- Émincez les échalotes et coupez vos tranches de chorizo en quarts 3- Faites revenir les échalotes dans une casserole avec de l’huile pendant 2min puis ajoutez le riz 4- Ajoutez le bouillon jusqu’au raz du riz, et maintenir le niveau du bouillon jusqu’à épuisement du bouillon 5- Ajoutez la crème, les assaisonnements, le chorizo et le parmesan 6- Laisser cuire encore 5 min puis servir",
+        "img":"https://www.pierreoteiza.com/images/products/513x374/141536.jpg"
+    },
+    {
+        "name":"Poulet au curry",
+        "price": 10,
+        "ingredients":[
+            "2 blancs de poulet",
+            "1 oignon jaune",
+            "1/2 pot de crème fraîche",
+            "curry, cumin",
+            "sel, poivre"
+        ],
+        "steps":"1- Faites chauffer votre poêle, ajoutez les oignons émincés et faites cuire à feu fort 2- Ajoutez le curry et le cumin et mélangez 3- Coupez le blanc de poulet en morceaux et ajoutez le dans la poêle puis rajoutez des épices 4- Baissez le feu et ajoutez 2 cuillères à soupe de crème fraiche 5- Attendez 5 min et rajoutez 2 cuillères à soupes de crème fraiche 6- Servez et dégustez",
+        "img":"https://images-ext-1.discordapp.net/external/-TrlFxGGw8fyaZe9-0Ngdl4331r3zCB5RZrKi5pw3rg/%3Fv%3D0/https/img.blesk.cz/img/19/full/4881119-img-vareni-recepty-kure-kure-na-kari-asie-cina-v0.jpg"
+    },
+    {
+        "name":"Pavé au saumon",
+        "price": 15,
+        "ingredients":[
+            "2 petits pavés de saumon",
+            "1 cuillère à soupe d’huile d’olive",
+            "1 bouquet d’Aneth",
+            "jus de citron",
+            "sel, poivre"
+        ],
+        "steps":"1- Retirez les arêtes du saumon et salez le 2- Faites chauffer un filet d’huile d’olive dans une poêle et placez-y le pavé côté peau 3- Laissez saisir pendant 3 min à feu vif puis passez en feu doux et couvrez pendant 6 min 4- Retournez le pavé côté chair et laissez dorer 30 secondes 5- Assaisonnez et ajoutez un filet de jus de citron 6- Décorez avec une branche d’aneth et servez",
+        "img":"https://media.discordapp.net/attachments/701697661601972325/702530681024282674/19872_w800h600c1cx2896cy2896.jpg"
+    },
+    {
+        "name":"Croque Monsieur",
+        "price": 10,
+        "ingredients":[
+            "4 tranches de pain de mie",
+            "25gr de beurre",
+            "2 tranches de jambon",
+            "4 tranches de fromage spécial croque monsieur",
+            "50gr de gruyère râpé",
+	    "2 cuillère à soupe de lait",
+	    "1 pincée de muscade",
+	    "sel, poivre"
+        ],
+        "steps":"1- Beurrez les 4 tranches de pain sur une seule face 2- Posez 1 tranches de fromages sur chaque tranche de pain 3- Posez 1 tranche de jambon pliée en deux sur 4 tranches de pain 4- Fermez les croques 5- Dans un bol, mélangez le gruyère rapé avec le lait, le sel, le poivre et la muscade 6- Répartissez le mélange sur les croques-monsieur 7- Placez au four sous le grill pendant 10 min",
+        "img":"https://img.taste.com.au/rbSJdD-r/taste/2018/05/june-18_croque-monsieur-137711-1.jpg"
+    },
+    {
+        "name":"Tomates farcies",
+        "price": 15,
+        "ingredients":[
+            "250gr de chair à saucisses",
+            "2 tomates",
+            "1 oignon",
+            "1 gousse d’ail",
+            "thym",
+	    "persil",
+	    "beurre",
+	    "sel, poivre"
+        ],
+        "steps":"1- Émincez l’oignon et la gousse d’ail 2- Mettez la moitié de l’oignon dans la chair à saucisse puis ajoutez l’ail et l’assaisonnement 3- Ouvrez les tomates et évidez les puis mettez la farce à l’intérieur et remettez le chapeau 4- Mettez le reste de l’oignon dans un plat avec la chair des tomates 5- Mettez les tomates farcies dans un plat avec un peu de thym et une noisette de beurre sur chaque tomates 6- Faites cuir au four à 180°C pendant ~1h 7- Servir chaud",
+        "img":"https://cdn.discordapp.com/attachments/701697661601972325/702446757233164298/MANU009_05StuffedTomato-37-800-600x800.png"
+    },
+    {
+        "name":"Wok de légumes",
+        "price": 10,
+        "ingredients":[
+            "100gr de haricots verts",
+            "50gr de petits pois",
+            "1 oignon",
+            "1 poivron rouge et 1 poivron jaune",
+            "1 courgette",
+	    "1 cuillère à soupe d’huile d’arachide",
+	    "1 cuillère à soupe de sauce soja"
+        ],
+        "steps":"1- Pelez et émincez l’oignon 2- Épépinez les poivrons et coupez-les en lanières 3- Faites chauffer l’huile dans un wok et revenir l’oignon sans coloration 4- Ajoutez les poivrons et les petits pois 5- Poursuivez la cuisson 10 min à feu doux 6- Pendant ce temps, effilez les haricots verts puis coupez les en deux 7- Epluchez les courgettes en longues lanières en alternant les couleurs 8- Après les 10 min de cuisson, versez les haricots verts et les lanières de courgettes dans le wok 9- Arrosez de sauce soja -10 Faites cuire encore 5 min -11 Servez chaud",
+        "img":"https://static.thiriet.com/data/common_public/gallery_images/site/18756/18774/73018,legumes_pour_wok.jpg"
+    },
+    {
+        "name":"Soupe de carottes aux lentilles",
+        "price": 10,
+        "ingredients":[
+            "400gr de carottes",
+            "100gr de lentilles corail",
+            "5cl de crème liquide",
+            "10gr de cumin",
+            "1 cube de bouillon de légumes",
+	    "sel, poivre"
+        ],
+        "steps":"1- Pelez et coupez les carottes en morceaux 2- Mettez les carottes et les lentilles dans une casserole 3- Recouvrez de 1.2L d’eau, ajoutez le cube de bouillon de légumes 4- Assaisonnez 5- Portez à ébullition et faites cuire 20 minutes -6 Mixez la soupe jusqu’à l’obtention d’une texture lisse -7 Faites réchauffer 5 minutes à feu doux, puis répartissez la soupe dans 2 bols et versez un filet de crème liquide -8 Parsemez de cumin et servez chaud.",
+        "img":"https://cdn.discordapp.com/attachments/701697661601972325/702446539288739890/soupe-carottes-lentilles.png"
+    }
+]
