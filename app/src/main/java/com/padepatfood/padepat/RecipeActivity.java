@@ -22,7 +22,7 @@ public class RecipeActivity extends AppCompatActivity {
         ImageView recipeImg = findViewById(R.id.recipeImg);
         TextView recipeTxt = findViewById(R.id.recipeText);
 
-        Picasso.get().load(recipe.getImgUrl()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
+        Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
         //recipeTxt.setText(recipe.getSteps());
 
         LinearLayout ingredientsLinearLayout = (LinearLayout)findViewById(R.id.ingredientsLayout);
