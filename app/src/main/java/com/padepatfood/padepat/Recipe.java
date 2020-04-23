@@ -8,14 +8,18 @@ public class Recipe {
     private Integer price;
     private List<String> ingredients;
     private String steps;
-    private String imgUrl;
+    private String img;
 
-    public Recipe(String name, Integer price, List<String> ingredients, String steps, String imgUrl) {
+    public Recipe() {
+
+    }
+
+    public Recipe(String name, Integer price, List<String> ingredients, String steps, String img) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
         this.steps = steps;
-        this.imgUrl = imgUrl;
+        this.img = img;
     }
 
     public String getName() {
@@ -50,11 +54,11 @@ public class Recipe {
         this.steps = steps;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getimg() {
+        return img;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setimg(String img) {
+        this.img = img;
     }
 }

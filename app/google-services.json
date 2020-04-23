@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "675110677989",
+    "firebase_url": "https://padepat-d4e38.firebaseio.com",
+    "project_id": "padepat-d4e38",
+    "storage_bucket": "padepat-d4e38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675110677989:android:b9aaaa6339e64776e4530c",
+        "android_client_info": {
+          "package_name": "com.padepatfood.padepat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675110677989-hv34sakvlepvvu32nb922s293f1j3cva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1m7TDcwltD4e4FiJua6Um4_xUvjT7bBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675110677989-hv34sakvlepvvu32nb922s293f1j3cva.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
