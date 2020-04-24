@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FCF0CF"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/padepatLogo"
-        android:layout_width="406dp"
-        android:layout_height="139dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/firstRecyclerView"

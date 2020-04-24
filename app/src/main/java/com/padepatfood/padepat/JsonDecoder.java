@@ -42,7 +42,7 @@ public class JsonDecoder {
                 List<String> steps = new ArrayList<>();
 
                 for (int j = 0; j < recipeObject.getJSONArray("steps").length(); j++) {
-                    ingredientsList.add((String) recipeObject.getJSONArray("steps").get(j));
+                    steps.add((String) recipeObject.getJSONArray("steps").get(j));
                 }
 
                 Recipe recipe = new Recipe(

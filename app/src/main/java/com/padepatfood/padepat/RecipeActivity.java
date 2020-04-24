@@ -1,8 +1,10 @@
 package com.padepatfood.padepat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ public class RecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+        getSupportActionBar().hide();
         Intent intent = getIntent();
         Recipe recipe = intent.getParcelableExtra("recipe");
 
@@ -39,22 +42,24 @@ public class RecipeActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        textParams.setMargins(0, 0, 0, 50);
+        layoutParams.setMargins(0, 0, 0, 50);
 
         LinearLayout ingredientsLinearLayout = (LinearLayout)findViewById(R.id.ingredientsLayout);
         for(String ingredient : recipe.getIngredients()){
             TextView ingredientText = new TextView(this);
             ingredientText.setText(ingredient);
-            ingredientText.setTextSize(24);
+            ingredientText.setTextSize(18);
             ingredientText.setLayoutParams(textParams);
             ingredientsLinearLayout.addView(ingredientText);
         }
         ingredientsLinearLayout.setLayoutParams(layoutParams);
+
+
         LinearLayout stepsLinearLayout = (LinearLayout)findViewById(R.id.stepsLayout);
         for(String step : recipe.getSteps()){
             TextView stepText = new TextView(this);
             stepText.setText(step);
-            stepText.setTextSize(24);
+            stepText.setTextSize(18);
             stepText.setLayoutParams(textParams);
             stepsLinearLayout.addView(stepText);
         }
