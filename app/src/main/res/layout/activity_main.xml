@@ -7,27 +7,35 @@
     android:background="#FCF0CF"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/padepatLogo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/firstRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logopadepat" />
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/top_horizontal_bar">
+
+        <ImageView
+            android:id="@+id/padepatLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="162dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="155dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/top_horizontal_bar"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/test_logo_padepat_w_name" />
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/firstRecyclerView"
-        android:layout_width="415dp"
-        android:layout_height="577dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/padepatLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         tools:listitem="@layout/second_recycler_view" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
