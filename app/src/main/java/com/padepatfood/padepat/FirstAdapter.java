@@ -3,6 +3,7 @@ package com.padepatfood.padepat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,11 +36,10 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
 
         adapter = new RecipeAdapter(recipes);//Get a list of questions for the adaptater
         recyclerView = holder.itemView.findViewById(R.id.secondRecyclerView);
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),LinearLayoutManager.HORIZONTAL,false));
-
-        holder.recipeTypeName.setText(recipeType.stringType);
+        String formatedText = recipeType.stringType.substring(0, 1).toUpperCase() + recipeType.stringType.substring(1).toLowerCase();
+        holder.recipeTypeName.setText(formatedText);
 
     }
 
