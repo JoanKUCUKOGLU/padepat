@@ -30,7 +30,8 @@ import java.util.stream.Collectors;
 public class RecipeActivity extends AppCompatActivity {
 
     private Recipe recipe;
-    private List<Like> likeList;
+    private List<Like> totalLikeList;
+    private List<Like> myLikeList;
     private Integer nbLikes = 0;
 
     private String currentDeviceId;
@@ -119,20 +120,22 @@ public class RecipeActivity extends AppCompatActivity {
         likeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                likeList = new ArrayList<>();
+                totalLikeList = new ArrayList<>();
+                myLikeList = new ArrayList<>();
                 nbLikes = 0;
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     Like like = data.getValue(Like.class);
+                    totalLikeList.add(like);
                     if(like.getRecipeid().equals(recipe.getId())) {
-                        likeList.add(like);
+                        myLikeList.add(like);
                     }
                 }
                 Log.d("TEST", "Value is: " + nbLikes);
-                buttonLike.setText(String.valueOf(likeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count()));
-                buttonDislike.setText(String.valueOf(likeList.stream().filter(like -> like.getType().equals(LikeType.Dislike.stringType)).count()));
-                if(likeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count() > 0) {
-                    likeProgressBar.setMax((int) likeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count());
-                    likeProgressBar.setProgress((int) likeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count());
+                buttonLike.setText(String.valueOf(myLikeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count()));
+                buttonDislike.setText(String.valueOf(myLikeList.stream().filter(like -> like.getType().equals(LikeType.Dislike.stringType)).count()));
+                if(myLikeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count() > 0) {
+                    likeProgressBar.setMax((int) myLikeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count());
+                    likeProgressBar.setProgress((int) myLikeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count());
                 } else {
                     likeProgressBar.setMax(2);
                     likeProgressBar.setProgress(1);
@@ -150,11 +153,11 @@ public class RecipeActivity extends AppCompatActivity {
     private void updateLike(LikeType type) {
         Like currentLike = new Like();
         // New line in DB
-        if(likeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).count() == 0) {
-            currentLike = new Like(likeList.get(likeList.size()-1).getLikeid() + 1,
+        if(myLikeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).count() == 0) {
+            currentLike = new Like(totalLikeList.size() > 0 ? totalLikeList.get(totalLikeList.size()-1).getLikeid() + 1 : 0,
                     currentDeviceId, recipe.getId(), type.stringType);
         } else { // Update existing line
-            currentLike = likeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).collect(Collectors.toList()).get(0);
+            currentLike = myLikeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).collect(Collectors.toList()).get(0);
             currentLike.setType(currentLike.getType().equals(type.stringType) ? LikeType.None.stringType : type.stringType);
         }
         likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
