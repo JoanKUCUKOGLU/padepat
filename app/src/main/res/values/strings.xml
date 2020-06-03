@@ -9,4 +9,8 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="image_de_la_recette">Image de la recette</string>
+    <string name="logo_de_padepat">logo de padepat</string>
+    <string name="ingredients_label">Ingrédients :</string>
+    <string name="etapes_preparation_label">Etapes de préparation :</string>
 </resources>

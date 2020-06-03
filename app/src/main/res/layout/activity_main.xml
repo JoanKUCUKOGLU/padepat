@@ -11,7 +11,10 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@drawable/top_horizontal_bar">
+        android:background="@drawable/top_horizontal_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/padepatLogo"
@@ -26,6 +29,7 @@
             android:layout_marginEnd="155dp"
             android:layout_marginBottom="0dp"
             android:background="@drawable/top_horizontal_bar"
+            android:contentDescription="@string/image_de_la_recette"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/test_logo_padepat_w_name" />
     </RelativeLayout>
@@ -35,6 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         tools:listitem="@layout/second_recycler_view" />
 

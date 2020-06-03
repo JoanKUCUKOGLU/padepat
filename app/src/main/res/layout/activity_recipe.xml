@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="180dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="@string/image_de_la_recette"
         app:layout_constraintBottom_toTopOf="@+id/recipeName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -19,18 +20,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logopadepat" />
 
-    <TextView
-        android:id="@+id/recipePrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="10"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="@+id/recipeName"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/recipeName"
-        app:layout_constraintTop_toBottomOf="@+id/recipeName" />
 
     <TextView
         android:id="@+id/recipeName"
@@ -45,6 +34,33 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipeImg" />
+
+
+    <TextView
+        android:id="@+id/recipePrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="@+id/recipeName"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/recipeName"
+        app:layout_constraintTop_toBottomOf="@+id/recipeName"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/recipeNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/velfo"
+        android:gravity="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/recipePrice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recipePrice"
+        tools:text="0 personnes" />
+
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -70,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
                 android:fontFamily="@font/velfo"
-                android:text="Ingrédients :"
+                android:text="@string/ingredients_label"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -90,15 +106,38 @@
                 android:layout_marginBottom="40dp"
                 android:fontFamily="@font/velfo"
                 android:gravity="center"
-                android:text="Etapes de préparation :"
+                android:text="@string/etapes_preparation_label"
                 android:textSize="20sp" />
 
             <LinearLayout
                 android:id="@+id/stepsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonDislike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Dislike" />
+
+                <Button
+                    android:id="@+id/buttonLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Like" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
