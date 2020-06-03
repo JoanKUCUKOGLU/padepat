@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;

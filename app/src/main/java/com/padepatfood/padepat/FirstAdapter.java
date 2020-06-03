@@ -34,8 +34,7 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
         final MainActivity.RecipeType recipeType = recipeTypes.get(position);
         RecipeAdapter adapter;
         RecyclerView recyclerView;
-        // DataManipulation dm = new DataManipulation(holder.itemView.getContext());
-        // List<Recipe> recipes = dm.getRecipesByType(recipeType.stringType);
+
         List<Recipe> recipesByType = recipeList.stream().filter(recipe -> recipe.getType().equals(recipeType.stringType)).collect(Collectors.toList());
 
         adapter = new RecipeAdapter(recipesByType);//Get a list of questions for the adaptater
