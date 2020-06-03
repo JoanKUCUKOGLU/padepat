@@ -8,9 +8,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +24,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class RecipeActivity extends AppCompatActivity {
 
@@ -29,9 +33,14 @@ public class RecipeActivity extends AppCompatActivity {
     private List<Like> likeList;
     private Integer nbLikes = 0;
 
-    private TextView nbLikesTextView;
+    private String currentDeviceId;
+
+    private ProgressBar likeProgressBar;
     private Button buttonLike;
     private Button buttonDislike;
+
+    FirebaseDatabase database;
+    DatabaseReference likeRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +52,9 @@ public class RecipeActivity extends AppCompatActivity {
 
         ImageView recipeImg = findViewById(R.id.recipeImg);
 
-        nbLikesTextView = findViewById(R.id.likeNbText);
+        currentDeviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        likeProgressBar = findViewById(R.id.likeProgressBar);
         buttonLike = findViewById(R.id.buttonLike);
         buttonDislike = findViewById(R.id.buttonDislike);
 
@@ -77,7 +88,6 @@ public class RecipeActivity extends AppCompatActivity {
         }
         ingredientsLinearLayout.setLayoutParams(layoutParams);
 
-
         LinearLayout stepsLinearLayout = (LinearLayout)findViewById(R.id.stepsLayout);
         for(String step : recipe.getSteps()){
             TextView stepText = new TextView(this);
@@ -87,27 +97,46 @@ public class RecipeActivity extends AppCompatActivity {
             stepsLinearLayout.addView(stepText);
         }
 
-        String device_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        buttonLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateLike(LikeType.Like);
+            }
+        });
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/likes");
+        buttonDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateLike(LikeType.Dislike);
+            }
+        });
+
+        // DATABASE
+        database = FirebaseDatabase.getInstance();
+        likeRef = database.getReference("/likes");
 
         // Read updates from the database
-        myRef.addValueEventListener(new ValueEventListener() {
+        likeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 likeList = new ArrayList<>();
                 nbLikes = 0;
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     Like like = data.getValue(Like.class);
-                    likeList.add(like);
-                    if(like.getDeviceid().equals(device_id) && like.getRecipeid().equals(recipe.getId())) {
-                        nbLikes += like.getType().equals(LikeType.Like.stringType) ? 1 : -1;
-                        if(nbLikes < 0) { nbLikes = 0; }
+                    if(like.getRecipeid().equals(recipe.getId())) {
+                        likeList.add(like);
                     }
                 }
                 Log.d("TEST", "Value is: " + nbLikes);
-                nbLikesTextView.setText(String.valueOf(nbLikes));
+                buttonLike.setText(String.valueOf(likeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count()));
+                buttonDislike.setText(String.valueOf(likeList.stream().filter(like -> like.getType().equals(LikeType.Dislike.stringType)).count()));
+                if(likeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count() > 0) {
+                    likeProgressBar.setMax((int) likeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count());
+                    likeProgressBar.setProgress((int) likeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count());
+                } else {
+                    likeProgressBar.setMax(2);
+                    likeProgressBar.setProgress(1);
+                }
             }
 
             @Override
@@ -118,9 +147,23 @@ public class RecipeActivity extends AppCompatActivity {
         });
     }
 
+    private void updateLike(LikeType type) {
+        Like currentLike = new Like();
+        // New line in DB
+        if(likeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).count() == 0) {
+            currentLike = new Like(likeList.get(likeList.size()-1).getLikeid() + 1,
+                    currentDeviceId, recipe.getId(), type.stringType);
+        } else { // Update existing line
+            currentLike = likeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).collect(Collectors.toList()).get(0);
+            currentLike.setType(currentLike.getType().equals(type.stringType) ? LikeType.None.stringType : type.stringType);
+        }
+        likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
+    }
+
     public enum LikeType {
         Like("like"),
-        Dislike("dislike");
+        Dislike("dislike"),
+        None("none");
 
         public String stringType;
         LikeType(String type) {

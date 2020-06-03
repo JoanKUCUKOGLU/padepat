@@ -105,7 +105,7 @@
                     app:srcCompat="@drawable/ic_baseline_thumb_up_alt_24" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar"
+                    android:id="@+id/likeProgressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -179,7 +179,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/botButtonLike"
+                    android:id="@+id/buttonLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"
@@ -195,7 +195,7 @@
                     tools:text="1K" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/botButtonDislike"
+                    android:id="@+id/buttonDislike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#FCF0BE"
