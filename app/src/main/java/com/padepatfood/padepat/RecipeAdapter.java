@@ -34,6 +34,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         final Recipe recipe = recipes.get(position);
 
         holder.recipeName.setText(recipe.getName());
+        holder.setIsRecyclable(false);
         Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(holder.recipeImage);
         Picasso.get().setLoggingEnabled(true);
 
