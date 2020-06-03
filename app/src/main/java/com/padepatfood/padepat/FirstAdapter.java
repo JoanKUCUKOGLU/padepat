@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +37,7 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
         // DataManipulation dm = new DataManipulation(holder.itemView.getContext());
         // List<Recipe> recipes = dm.getRecipesByType(recipeType.stringType);
         List<Recipe> recipesByType = recipeList.stream().filter(recipe -> recipe.getType().equals(recipeType.stringType)).collect(Collectors.toList());
+
         adapter = new RecipeAdapter(recipesByType);//Get a list of questions for the adaptater
         recyclerView = holder.itemView.findViewById(R.id.secondRecyclerView);
         recyclerView.setHasFixedSize(true);
