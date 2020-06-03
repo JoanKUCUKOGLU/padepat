@@ -20,6 +20,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logopadepat" />
 
+
+    <TextView
+        android:id="@+id/recipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/velfo"
+        android:gravity="center"
+        android:text="Blanquette"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/recipePrice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeImg" />
+
+
     <TextView
         android:id="@+id/recipePrice"
         android:layout_width="wrap_content"
@@ -34,17 +50,17 @@
         tools:text="10" />
 
     <TextView
-        android:id="@+id/recipeName"
+        android:id="@+id/recipeNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/velfo"
         android:gravity="center"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/recipePrice"
+        app:layout_constraintBottom_toBottomOf="@+id/recipePrice"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeImg" />
+        app:layout_constraintStart_toEndOf="@+id/recipePrice"
+        tools:text="0 personnes" />
+
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -97,8 +113,31 @@
                 android:id="@+id/stepsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonDislike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Dislike" />
+
+                <Button
+                    android:id="@+id/buttonLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Like" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
