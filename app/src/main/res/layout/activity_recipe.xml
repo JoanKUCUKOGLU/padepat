@@ -52,9 +52,9 @@
                     android:layout_below="@+id/recipeImg"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
-                    android:fontFamily="@font/velfo"
+                    android:fontFamily="@font/antipasto_regular"
                     android:gravity="center"
-                    android:textSize="24sp"
+                    android:textSize="36sp"
                     app:layout_constraintBottom_toTopOf="@+id/recipePrice"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -70,6 +70,7 @@
                     android:layout_alignBottom="@+id/recipeNumber"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/recipeNumber"
+                    android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:textSize="24sp"
                     tools:text="10" />
@@ -81,7 +82,7 @@
                     android:layout_below="@+id/recipeName"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:fontFamily="@font/velfo"
+                    android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:textSize="24sp"
                     tools:text="0 personnes" />
@@ -91,6 +92,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -127,10 +130,12 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:fontFamily="@font/velfo"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/antipasto_regular"
                 android:text="@string/ingredients_label"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -138,6 +143,8 @@
                 android:id="@+id/ingredientsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:orientation="vertical">
 
             </LinearLayout>
@@ -146,16 +153,20 @@
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:fontFamily="@font/velfo"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/antipasto_regular"
                 android:gravity="center"
                 android:text="@string/etapes_preparation_label"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:id="@+id/stepsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:orientation="vertical">
 
             </LinearLayout>
@@ -163,7 +174,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="40dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
