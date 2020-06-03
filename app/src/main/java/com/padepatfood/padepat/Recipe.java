@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Recipe implements Parcelable {
 
+    private Integer id;
     private String name;
     private Integer price;
     private List<String> ingredients;
@@ -18,7 +19,8 @@ public class Recipe implements Parcelable {
 
     }
 
-    public Recipe(String name, Integer price, List<String> ingredients, List<String> steps, String img,String type) {
+    public Recipe(Integer id, String name, Integer price, List<String> ingredients, List<String> steps, String img, String type) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
@@ -28,6 +30,11 @@ public class Recipe implements Parcelable {
     }
 
     protected Recipe(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
         name = in.readString();
         if (in.readByte() == 0) {
             price = null;
@@ -42,6 +49,12 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
         dest.writeString(name);
         if (price == null) {
             dest.writeByte((byte) 0);
@@ -71,6 +84,10 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
+
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
 
     public String getName() {
         return name;

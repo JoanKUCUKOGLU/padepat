@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder>  {
+    private List<Recipe> recipeList;
     private List<MainActivity.RecipeType> recipeTypes;
-    public FirstAdapter(List<MainActivity.RecipeType> recipeTypes) {
+    public FirstAdapter(List<Recipe> recipeList, List<MainActivity.RecipeType> recipeTypes) {
+        this.recipeList = recipeList;
         this.recipeTypes = recipeTypes;
     }
 
@@ -31,10 +34,11 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
         final MainActivity.RecipeType recipeType = recipeTypes.get(position);
         RecipeAdapter adapter;
         RecyclerView recyclerView;
-        DataManipulation dm = new DataManipulation(holder.itemView.getContext());
-        List<Recipe> recipes = dm.getRecipesByType(recipeType.stringType);
+        // DataManipulation dm = new DataManipulation(holder.itemView.getContext());
+        // List<Recipe> recipes = dm.getRecipesByType(recipeType.stringType);
+        List<Recipe> recipesByType = recipeList.stream().filter(recipe -> recipe.getType().equals(recipeType.stringType)).collect(Collectors.toList());
 
-        adapter = new RecipeAdapter(recipes);//Get a list of questions for the adaptater
+        adapter = new RecipeAdapter(recipesByType);//Get a list of questions for the adaptater
         recyclerView = holder.itemView.findViewById(R.id.secondRecyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),LinearLayoutManager.HORIZONTAL,false));

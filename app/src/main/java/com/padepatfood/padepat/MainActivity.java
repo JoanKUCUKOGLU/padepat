@@ -27,12 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
         recipeList = getIntent().getParcelableArrayListExtra("recipeList");
 
-        adapter = new FirstAdapter(Arrays.asList(RecipeType.values()));//Get a list of questions for the adaptater
+        adapter = new FirstAdapter(recipeList, Arrays.asList(RecipeType.values()));
         recyclerView = findViewById(R.id.firstRecyclerView);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     public enum RecipeType {

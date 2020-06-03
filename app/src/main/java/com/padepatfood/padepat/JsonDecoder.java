@@ -46,6 +46,7 @@ public class JsonDecoder {
                 }
 
                 Recipe recipe = new Recipe(
+                        recipeObject.getInt("id"),
                         recipeObject.getString("name"),
                         recipeObject.getInt("price"),
                         ingredientsList,

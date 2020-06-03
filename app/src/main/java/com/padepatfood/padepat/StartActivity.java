@@ -2,7 +2,10 @@ package com.padepatfood.padepat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -19,6 +22,7 @@ import java.util.List;
 public class StartActivity extends AppCompatActivity {
 
     List<Recipe> recipeList;
+    Boolean connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,28 +32,39 @@ public class StartActivity extends AppCompatActivity {
         // Hide ActionBar
         getSupportActionBar().hide();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/recipes");
+        // Check if device is connected to internet
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            connected = true;
+        } else {
+            connected = false;
+        }
 
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                recipeList = new ArrayList<>();
-                for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    Recipe recipe = data.getValue(Recipe.class);
-                    recipeList.add(recipe);
+        if (connected) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("/recipes");
+
+            // Read from the database
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    recipeList = new ArrayList<>();
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Recipe recipe = data.getValue(Recipe.class);
+                        recipeList.add(recipe);
+                    }
+                    Log.d("TEST", "Value is: " + recipeList);
+                    loading();
                 }
-                Log.d("TEST", "Value is: " + recipeList);
-                loading();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("TEST", "Failed to read value.", error.toException());
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("TEST", "Failed to read value.", error.toException());
+                }
+            });
+        }
     }
 
     public void loading() {
