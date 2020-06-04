@@ -43,7 +43,8 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/logopadepat" />
+                    app:srcCompat="@drawable/logopadepat"
+                    android:transitionName="recipe_transition"/>
 
                 <TextView
                     android:id="@+id/recipeName"

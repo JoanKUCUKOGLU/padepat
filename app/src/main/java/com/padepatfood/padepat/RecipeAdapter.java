@@ -1,5 +1,6 @@
 package com.padepatfood.padepat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -43,7 +46,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), RecipeActivity.class);
                 intent.putExtra("recipe",recipe);
-                holder.itemView.getContext().startActivity(intent);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) holder.itemView.getContext(), holder.recipeImage, ViewCompat.getTransitionName(holder.recipeImage));
+                holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
         });
     }

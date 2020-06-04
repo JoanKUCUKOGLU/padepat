@@ -23,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/image_de_la_recette"
-            app:srcCompat="@drawable/logopadepat" />
+            app:srcCompat="@drawable/logopadepat"
+            android:transitionName="recipe_transition"/>
 
     </androidx.cardview.widget.CardView>
 
