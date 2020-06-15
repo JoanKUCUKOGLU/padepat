@@ -7,17 +7,7 @@ import com.baoyz.widget.PullRefreshLayout;
 
 import android.os.Bundle;
 import android.transition.Fade;
-import android.view.MenuItem;
 import android.view.View;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-
-import java.util.Arrays;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,8 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FirstAdapter adapter;
     private RecyclerView recyclerView;
-
-    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 },3000);
             }
         });
-    }
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 }
 
