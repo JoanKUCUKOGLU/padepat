@@ -1,21 +1,30 @@
 package com.padepatfood.padepat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.transition.Fade;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +52,8 @@ public class RecipeActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference likeRef;
+    LinearLayout commentsLayout;
+    TextInputEditText addCommentText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +79,8 @@ public class RecipeActivity extends AppCompatActivity {
         likeProgressBar = findViewById(R.id.likeProgressBar);
         buttonLike = findViewById(R.id.buttonLike);
         buttonDislike = findViewById(R.id.buttonDislike);
+        commentsLayout = findViewById(R.id.commentLayout);
+        addCommentText = findViewById(R.id.addCommentTextView);
 
         Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
 
@@ -158,6 +171,53 @@ public class RecipeActivity extends AppCompatActivity {
                 Log.w("TEST", "Failed to read value.", error.toException());
             }
         });
+
+        addCommentText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN)
+                        && ((keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_BACK )) {
+                    LinearLayout newLinearLayout = new LinearLayout(RecipeActivity.this);
+                    newLinearLayout.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+
+
+                    TextView userTextView = new TextView(RecipeActivity.this);
+                    userTextView.setTextSize(18);
+                    userTextView.setText("[USER NAME]");
+                    userTextView.setTypeface(null,Typeface.BOLD);
+                    params.setMargins(0, 5,0,5);
+                    userTextView.setLayoutParams(params);
+
+                    TextView newTextView = new TextView(RecipeActivity.this);
+                    newTextView.setTextSize(18);
+                    newTextView.setText(addCommentText.getText());
+                    newTextView.setLayoutParams(params);
+
+                    newLinearLayout.addView(userTextView);
+                    newLinearLayout.addView(newTextView);
+
+                    View separator = new View(RecipeActivity.this);
+                    separator.setBackgroundColor(Color.parseColor("#E6D1A1"));
+                    separator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2));
+                    newLinearLayout.addView(separator);
+
+                    addCommentText.setText(null);
+                    addCommentText.clearFocus();
+
+                    params.setMargins(20, 10,20,10);
+                    newLinearLayout.setLayoutParams(params);
+
+                    commentsLayout.addView(newLinearLayout);
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void updateLike(LikeType type) {
