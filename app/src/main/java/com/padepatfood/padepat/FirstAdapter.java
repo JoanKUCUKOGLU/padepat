@@ -13,11 +13,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder>  {
+    private GlobalData g;
     private List<Recipe> recipeList;
-    private List<MainActivity.RecipeType> recipeTypes;
-    public FirstAdapter(List<Recipe> recipeList, List<MainActivity.RecipeType> recipeTypes) {
-        this.recipeList = recipeList;
-        this.recipeTypes = recipeTypes;
+    private List<String> categoryList;
+    public FirstAdapter() {
+        this.g = GlobalData.getInstance();
+        this.recipeList = g.getRecipeList();
+        this.categoryList = g.getCategoryList();
     }
 
     @NonNull
@@ -30,25 +32,25 @@ public class FirstAdapter extends RecyclerView.Adapter<FirstAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull FirstAdapter.ViewHolder holder, int position) {
-        final MainActivity.RecipeType recipeType = recipeTypes.get(position);
+        final String category = categoryList.get(position);
         RecipeAdapter adapter;
         RecyclerView recyclerView;
 
-        List<Recipe> recipesByType = recipeList.stream().filter(recipe -> recipe.getType().equals(recipeType.stringType)).collect(Collectors.toList());
+        List<Recipe> recipesByType = recipeList.stream().filter(recipe -> recipe.getType().equals(category)).collect(Collectors.toList());
 
-        adapter = new RecipeAdapter(recipesByType);//Get a list of questions for the adaptater
+        adapter = new RecipeAdapter(recipesByType); //Get a list of questions for the adaptater
         recyclerView = holder.itemView.findViewById(R.id.secondRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),LinearLayoutManager.HORIZONTAL,false));
-        String formatedText = recipeType.stringType.substring(0, 1).toUpperCase() + recipeType.stringType.substring(1).toLowerCase();
+        String formatedText = category.substring(0, 1).toUpperCase() + category.substring(1).toLowerCase();
         holder.recipeTypeName.setText(formatedText);
 
     }
 
     @Override
     public int getItemCount() {
-        return recipeTypes.size();
+        return categoryList.size();
     }
 
     class ViewHolder extends  RecyclerView.ViewHolder{

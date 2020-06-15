@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
 import java.util.Arrays;
 
 import java.util.ArrayList;
@@ -13,10 +17,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Recipe> recipeList = new ArrayList<>();
+    private GlobalData g;
 
     private FirstAdapter adapter;
     private RecyclerView recyclerView;
+
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,23 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        recipeList = getIntent().getParcelableArrayListExtra("recipeList");
-
-        adapter = new FirstAdapter(recipeList, Arrays.asList(RecipeType.values()));
+        adapter = new FirstAdapter();
         recyclerView = findViewById(R.id.firstRecyclerView);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    public enum RecipeType {
-        Vege("végétarien"),
-        Classic("classique");
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
-        public String stringType;
-        RecipeType(String type) {
-            this.stringType = type;
-        }
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 }
 
