@@ -1,8 +1,10 @@
 package com.padepatfood.padepat;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,6 +64,15 @@ public class StartActivity extends AppCompatActivity {
             connected = true;
         } else {
             connected = false;
+            AlertDialog.Builder alert = new AlertDialog.Builder(StartActivity.this);
+            alert.setTitle("Error");
+            alert.setNegativeButton("OK", null);
+            alert.setIcon(android.R.drawable.ic_dialog_alert);
+            TextView text = new TextView(StartActivity.this);
+            text.setText("This app needs an Internet connection");
+            text.setGravity(Gravity.CENTER);
+            alert.setView(text);
+            alert.show();
         }
 
         if (connected) {

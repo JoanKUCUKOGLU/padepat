@@ -1,20 +1,37 @@
 package com.padepatfood.padepat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.transition.Fade;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +41,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.RecursiveAction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -42,7 +60,10 @@ public class RecipeActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference likeRef;
+    LinearLayout commentsLayout;
+    TextInputEditText addCommentText;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +72,15 @@ public class RecipeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("recipe");
 
+        Fade fade = new Fade();
+        View decor = getWindow().getDecorView();
+        fade.excludeTarget(decor.findViewById(R.id.action_bar_container), true);
+        fade.excludeTarget(android.R.id.statusBarBackground, true);
+        fade.excludeTarget(android.R.id.navigationBarBackground, true);
+
+        getWindow().setEnterTransition(fade);
+        getWindow().setExitTransition(fade);
+
         ImageView recipeImg = findViewById(R.id.recipeImg);
 
         currentDeviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -58,6 +88,8 @@ public class RecipeActivity extends AppCompatActivity {
         likeProgressBar = findViewById(R.id.likeProgressBar);
         buttonLike = findViewById(R.id.buttonLike);
         buttonDislike = findViewById(R.id.buttonDislike);
+        commentsLayout = findViewById(R.id.commentLayout);
+        addCommentText = findViewById(R.id.addCommentTextView);
 
         Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
 
@@ -148,6 +180,133 @@ public class RecipeActivity extends AppCompatActivity {
                 Log.w("TEST", "Failed to read value.", error.toException());
             }
         });
+
+        addCommentText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (addCommentText.getRight() - addCommentText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        addComment();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void addComment() {
+
+        hideKeyboard(RecipeActivity.this);
+        LinearLayout newLinearLayout = new LinearLayout(RecipeActivity.this);
+        newLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+
+        TextView userTextView = new TextView(RecipeActivity.this);
+        userTextView.setTextSize(18);
+        userTextView.setText("[USER NAME]");
+        userTextView.setTypeface(null,Typeface.BOLD);
+        params.setMargins(0, 5,0,5);
+        userTextView.setLayoutParams(params);
+
+        TextView newTextView = new TextView(RecipeActivity.this);
+        newTextView.setTextSize(18);
+        newTextView.setText(addCommentText.getText().toString());
+        newTextView.setLayoutParams(params);
+
+        newLinearLayout.addView(userTextView);
+        newLinearLayout.addView(newTextView);
+
+        LinearLayout.LayoutParams actionLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        actionLayout.setMargins(5,5,20,5);
+        LinearLayout actionLinearLayout = new LinearLayout(RecipeActivity.this);
+        actionLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        ImageView editImg = new ImageView(RecipeActivity.this);
+        editImg.setImageResource(R.drawable.ic_baseline_edit_24);
+        editImg.setLayoutParams(actionLayout);
+
+        editImg.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public void onClick(View v) {
+                LinearLayout parentLinearLayout = (LinearLayout) editImg.getParent().getParent();
+                TextView text = (TextView)parentLinearLayout.getChildAt(1);
+
+                TextInputEditText editText = new TextInputEditText(RecipeActivity.this);
+                editText.setHint("Editez votre commentaire");
+                editText.setLayoutParams(text.getLayoutParams());
+                editText.setText(text.getText());
+                editText.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_baseline_send_35,0);
+                editText.setFocusable(true);
+                editText.requestFocus();
+                parentLinearLayout.removeView(text);
+                parentLinearLayout.addView(editText,1);
+
+                editText.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        final int DRAWABLE_LEFT = 0;
+                        final int DRAWABLE_TOP = 1;
+                        final int DRAWABLE_RIGHT = 2;
+                        final int DRAWABLE_BOTTOM = 3;
+
+                        if(event.getAction() == MotionEvent.ACTION_UP) {
+                            if(event.getRawX() >= (addCommentText.getRight() - addCommentText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                                hideKeyboard(RecipeActivity.this);
+                                text.setText(editText.getText().toString());
+                                editText.clearFocus();
+                                editText.setCursorVisible(false);
+                                parentLinearLayout.removeView(editText);
+                                parentLinearLayout.addView(text,1);
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
+
+        ImageView deleteImg = new ImageView(RecipeActivity.this);
+        deleteImg.setImageResource(R.drawable.ic_baseline_delete_24);
+        deleteImg.setLayoutParams(actionLayout);
+        deleteImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               LinearLayout parentLinearLayout = (LinearLayout) deleteImg.getParent().getParent();
+               commentsLayout.removeView(parentLinearLayout);
+            }
+        });
+
+        actionLinearLayout.addView(editImg);
+        actionLinearLayout.addView(deleteImg);
+
+        newLinearLayout.addView(actionLinearLayout);
+
+        View separator = new View(RecipeActivity.this);
+        separator.setBackgroundColor(Color.parseColor("#E6D1A1"));
+        LinearLayout.LayoutParams separatorLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2);
+        separatorLayout.setMargins(0,5,0,5);
+        separator.setLayoutParams(separatorLayout);
+        newLinearLayout.addView(separator);
+
+        addCommentText.setText(null);
+        addCommentText.clearFocus();
+        addCommentText.setCursorVisible(false);
+
+        params.setMargins(20, 10,20,10);
+        newLinearLayout.setLayoutParams(params);
+
+        commentsLayout.addView(newLinearLayout);
     }
 
     private void updateLike(LikeType type) {
@@ -161,6 +320,17 @@ public class RecipeActivity extends AppCompatActivity {
             currentLike.setType(currentLike.getType().equals(type.stringType) ? LikeType.None.stringType : type.stringType);
         }
         likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public enum LikeType {
