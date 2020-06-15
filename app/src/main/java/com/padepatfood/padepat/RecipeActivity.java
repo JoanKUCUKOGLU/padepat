@@ -41,6 +41,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.RecursiveAction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -224,6 +225,72 @@ public class RecipeActivity extends AppCompatActivity {
 
         newLinearLayout.addView(userTextView);
         newLinearLayout.addView(newTextView);
+
+        LinearLayout.LayoutParams actionLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        actionLayout.setMargins(5,5,20,5);
+        LinearLayout actionLinearLayout = new LinearLayout(RecipeActivity.this);
+        actionLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        ImageView editImg = new ImageView(RecipeActivity.this);
+        editImg.setImageResource(R.drawable.ic_baseline_edit_24);
+        editImg.setLayoutParams(actionLayout);
+
+        editImg.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public void onClick(View v) {
+                LinearLayout parentLinearLayout = (LinearLayout) editImg.getParent().getParent();
+                TextView text = (TextView)parentLinearLayout.getChildAt(1);
+
+                TextInputEditText editText = new TextInputEditText(RecipeActivity.this);
+                editText.setHint("Editez votre commentaire");
+                editText.setLayoutParams(text.getLayoutParams());
+                editText.setText(text.getText());
+                editText.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_baseline_send_35,0);
+                editText.setFocusable(true);
+                editText.requestFocus();
+                parentLinearLayout.removeView(text);
+                parentLinearLayout.addView(editText,1);
+
+                editText.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        final int DRAWABLE_LEFT = 0;
+                        final int DRAWABLE_TOP = 1;
+                        final int DRAWABLE_RIGHT = 2;
+                        final int DRAWABLE_BOTTOM = 3;
+
+                        if(event.getAction() == MotionEvent.ACTION_UP) {
+                            if(event.getRawX() >= (addCommentText.getRight() - addCommentText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                                hideKeyboard(RecipeActivity.this);
+                                text.setText(editText.getText().toString());
+                                editText.clearFocus();
+                                editText.setCursorVisible(false);
+                                parentLinearLayout.removeView(editText);
+                                parentLinearLayout.addView(text,1);
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
+
+        ImageView deleteImg = new ImageView(RecipeActivity.this);
+        deleteImg.setImageResource(R.drawable.ic_baseline_delete_24);
+        deleteImg.setLayoutParams(actionLayout);
+        deleteImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               LinearLayout parentLinearLayout = (LinearLayout) deleteImg.getParent().getParent();
+               commentsLayout.removeView(parentLinearLayout);
+            }
+        });
+
+        actionLinearLayout.addView(editImg);
+        actionLinearLayout.addView(deleteImg);
+
+        newLinearLayout.addView(actionLinearLayout);
 
         View separator = new View(RecipeActivity.this);
         separator.setBackgroundColor(Color.parseColor("#E6D1A1"));
