@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +22,7 @@ import java.util.List;
 public class StartActivity extends AppCompatActivity {
 
     List<Recipe> recipeList;
+    List<String> categoryList;
     Boolean connected = false;
 
     @Override
@@ -54,6 +54,7 @@ public class StartActivity extends AppCompatActivity {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Recipe recipe = data.getValue(Recipe.class);
                         recipeList.add(recipe);
+
                     }
                     Log.d("TEST", "Value is: " + recipeList);
                     loading();
