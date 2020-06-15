@@ -229,7 +229,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#00FFFFFF"
+                        android:drawableEnd="@drawable/ic_baseline_send_35"
                         android:hint="Ajouter un commentaire..." />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

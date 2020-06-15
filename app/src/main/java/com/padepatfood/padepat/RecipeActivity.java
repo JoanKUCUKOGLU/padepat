@@ -5,17 +5,24 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Fade;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,6 +62,7 @@ public class RecipeActivity extends AppCompatActivity {
     LinearLayout commentsLayout;
     TextInputEditText addCommentText;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,52 +180,66 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        addCommentText.setOnKeyListener(new View.OnKeyListener() {
+        addCommentText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN)
-                        && ((keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_BACK )) {
-                    LinearLayout newLinearLayout = new LinearLayout(RecipeActivity.this);
-                    newLinearLayout.setOrientation(LinearLayout.VERTICAL);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                    );
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
 
-
-                    TextView userTextView = new TextView(RecipeActivity.this);
-                    userTextView.setTextSize(18);
-                    userTextView.setText("[USER NAME]");
-                    userTextView.setTypeface(null,Typeface.BOLD);
-                    params.setMargins(0, 5,0,5);
-                    userTextView.setLayoutParams(params);
-
-                    TextView newTextView = new TextView(RecipeActivity.this);
-                    newTextView.setTextSize(18);
-                    newTextView.setText(addCommentText.getText());
-                    newTextView.setLayoutParams(params);
-
-                    newLinearLayout.addView(userTextView);
-                    newLinearLayout.addView(newTextView);
-
-                    View separator = new View(RecipeActivity.this);
-                    separator.setBackgroundColor(Color.parseColor("#E6D1A1"));
-                    separator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2));
-                    newLinearLayout.addView(separator);
-
-                    addCommentText.setText(null);
-                    addCommentText.clearFocus();
-
-                    params.setMargins(20, 10,20,10);
-                    newLinearLayout.setLayoutParams(params);
-
-                    commentsLayout.addView(newLinearLayout);
-                    return true;
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (addCommentText.getRight() - addCommentText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        addComment();
+                        return true;
+                    }
                 }
                 return false;
             }
         });
+    }
 
+    private void addComment() {
+
+        hideKeyboard(RecipeActivity.this);
+        LinearLayout newLinearLayout = new LinearLayout(RecipeActivity.this);
+        newLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+
+        TextView userTextView = new TextView(RecipeActivity.this);
+        userTextView.setTextSize(18);
+        userTextView.setText("[USER NAME]");
+        userTextView.setTypeface(null,Typeface.BOLD);
+        params.setMargins(0, 5,0,5);
+        userTextView.setLayoutParams(params);
+
+        TextView newTextView = new TextView(RecipeActivity.this);
+        newTextView.setTextSize(18);
+        newTextView.setText(addCommentText.getText().toString());
+        newTextView.setLayoutParams(params);
+
+        newLinearLayout.addView(userTextView);
+        newLinearLayout.addView(newTextView);
+
+        View separator = new View(RecipeActivity.this);
+        separator.setBackgroundColor(Color.parseColor("#E6D1A1"));
+        LinearLayout.LayoutParams separatorLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2);
+        separatorLayout.setMargins(0,5,0,5);
+        separator.setLayoutParams(separatorLayout);
+        newLinearLayout.addView(separator);
+
+        addCommentText.setText(null);
+        addCommentText.clearFocus();
+        addCommentText.setCursorVisible(false);
+
+        params.setMargins(20, 10,20,10);
+        newLinearLayout.setLayoutParams(params);
+
+        commentsLayout.addView(newLinearLayout);
     }
 
     private void updateLike(LikeType type) {
@@ -231,6 +253,17 @@ public class RecipeActivity extends AppCompatActivity {
             currentLike.setType(currentLike.getType().equals(type.stringType) ? LikeType.None.stringType : type.stringType);
         }
         likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public enum LikeType {
