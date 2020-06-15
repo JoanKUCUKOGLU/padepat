@@ -3,9 +3,11 @@ package com.padepatfood.padepat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.baoyz.widget.PullRefreshLayout;
 
 import android.os.Bundle;
 import android.transition.Fade;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.Arrays;
@@ -16,6 +18,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     List<Recipe> recipeList = new ArrayList<>();
+
+    PullRefreshLayout layout;
 
     private FirstAdapter adapter;
     private RecyclerView recyclerView;
@@ -43,6 +47,20 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        layout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        layout.setOnRefreshListener(() -> {
+            layout.postDelayed(() -> {
+                layout.setRefreshing(false);
+            }, 3000);
+        });
+        layout.setRefreshStyle(PullRefreshLayout.STYLE_SMARTISAN);
+        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                
+            }
+        });
     }
 
     public enum RecipeType {
