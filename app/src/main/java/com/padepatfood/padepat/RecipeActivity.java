@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,6 +51,15 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("recipe");
+
+        Fade fade = new Fade();
+        View decor = getWindow().getDecorView();
+        fade.excludeTarget(decor.findViewById(R.id.action_bar_container), true);
+        fade.excludeTarget(android.R.id.statusBarBackground, true);
+        fade.excludeTarget(android.R.id.navigationBarBackground, true);
+
+        getWindow().setEnterTransition(fade);
+        getWindow().setExitTransition(fade);
 
         ImageView recipeImg = findViewById(R.id.recipeImg);
 
