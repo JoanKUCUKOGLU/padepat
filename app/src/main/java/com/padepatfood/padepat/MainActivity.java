@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                
+
             }
         });
     }
