@@ -9,6 +9,8 @@ public class GlobalData {
     private List<Recipe> recipeList;
     private List<String> categoryList;
 
+    private User currentUser;
+
     private GlobalData() {
         recipeList = new ArrayList<>();
         categoryList = new ArrayList<>();
@@ -28,6 +30,18 @@ public class GlobalData {
 
     public void setCategoryList(List<String> categoryList) {
         this.categoryList = categoryList;
+    }
+
+    public Boolean isUserLogged() {
+        return currentUser != null;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     public static synchronized GlobalData getInstance() {
