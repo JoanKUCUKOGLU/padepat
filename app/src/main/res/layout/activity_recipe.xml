@@ -37,7 +37,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="16dp"
-                    android:contentDescription="@string/image_de_la_recette"
+                    android:contentDescription="@string/recipe_picture"
                     app:layout_constraintBottom_toTopOf="@+id/recipeName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -149,7 +149,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/antipasto_regular"
-                android:text="@string/ingredients_label"
+                android:text="@string/ingredients"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -173,7 +173,7 @@
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/antipasto_regular"
                 android:gravity="center"
-                android:text="@string/etapes_preparation_label"
+                android:text="@string/preparation_steps"
                 android:textSize="30sp" />
 
             <LinearLayout
