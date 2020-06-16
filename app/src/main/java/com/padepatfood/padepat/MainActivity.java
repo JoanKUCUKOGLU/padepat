@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        GlobalData.getInstance().setCurrentUser(new User("TEST USER","User@Tes.com","MDP","https://i0.wp.com/powerviewltd.com/wp-content/uploads/2018/03/profile-img-1.jpg?ssl=1","Vegan"));
+
         getSupportActionBar().hide();
 
         Fade fade = new Fade();
@@ -59,16 +61,17 @@ public class MainActivity extends AppCompatActivity {
         //ImageView homeButton = (ImageView)navBar.getChildAt(0);
         ImageView favButton = (ImageView)navBar.getChildAt(1);
         ImageView profileButton = (ImageView)navBar.getChildAt(2);
-        boolean isConnected = false;
+        boolean isConnected= true;
         profileButton.setOnClickListener(new View.OnClickListener() {
+            Intent newActivity;
             @Override
             public void onClick(View v) {
                 if(isConnected){
-
+                    newActivity = new Intent(MainActivity.this, ProfilActivity.class);
                 }else{
-                    Intent newActivity = new Intent(MainActivity.this, LoginRegisterActivity.class);
-                    startActivity(newActivity);
+                     newActivity = new Intent(MainActivity.this, LoginRegisterActivity.class);
                 }
+                startActivity(newActivity);
             }
         });
     }

@@ -1,5 +1,7 @@
 package com.padepatfood.padepat;
 
+import android.widget.ImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +11,35 @@ public class User {
     private String email;
     private String password;
     private List<String> favoriteRecipes;
+    private String imgLink;
+    private String dietaryPrefs;
 
     public User() {
     }
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password,String imgLink, String dietaryPrefs) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.imgLink = imgLink;
+        this.dietaryPrefs = dietaryPrefs;
         favoriteRecipes = new ArrayList<>();
+    }
+
+    public String getImgLink() {
+        return imgLink;
+    }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
+    }
+
+    public String getDietaryPrefs() {
+        return dietaryPrefs;
+    }
+
+    public void setDietaryPrefs(String dietaryPrefs) {
+        this.dietaryPrefs = dietaryPrefs;
     }
 
     public String getName() {

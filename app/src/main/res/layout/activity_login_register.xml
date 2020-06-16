@@ -22,8 +22,8 @@
 
         <ImageView
             android:id="@+id/registerLogo"
-            android:layout_width="250dp"
-            android:layout_height="171dp"
+            android:layout_width="300dp"
+            android:layout_height="190dp"
             android:layout_marginBottom="30dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/logo_padepat_fond_transparent_sans_bordures" />

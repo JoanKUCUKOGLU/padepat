@@ -48,7 +48,6 @@ public class StartActivity extends AppCompatActivity {
 
         g = GlobalData.getInstance();
 
-
         // Check if device is connected to internet
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||

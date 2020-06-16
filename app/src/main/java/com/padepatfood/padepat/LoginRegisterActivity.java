@@ -14,13 +14,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     Button registerButton;
     Button loginButton;
-    Button saveButton;
     LinearLayout loginRegisterLinearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
+        getSupportActionBar().hide();
 
         registerButton = findViewById(R.id.regiserButton);
         loginButton = findViewById(R.id.loginButton);
@@ -85,8 +85,5 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 loginRegisterLinearLayout.addView(saveButton);
             }
         });
-
-
-
     }
 }
