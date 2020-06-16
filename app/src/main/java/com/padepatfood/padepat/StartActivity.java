@@ -89,6 +89,7 @@ public class StartActivity extends AppCompatActivity {
                     g.setRecipeList(recipeList);
                     g.setCategoryList(categoryList);
 
+                    // save all recipes in json for offline mode
                     Gson gson = new Gson();
                     String s1 = gson.toJson(dataSnapshot.getValue());
 
