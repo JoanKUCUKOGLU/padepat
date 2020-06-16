@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -136,6 +137,7 @@ public class RecipeActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         likeRef = database.getReference("/likes");
 
+        TextView likeDislikeDisplayNumber = findViewById(R.id.likeNumberDisplay);
         // Read updates from the database
         likeRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -151,14 +153,22 @@ public class RecipeActivity extends AppCompatActivity {
                     }
                 }
                 Log.d("TEST", "Value is: " + nbLikes);
-                buttonLike.setText(String.valueOf(myLikeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count()));
-                buttonDislike.setText(String.valueOf(myLikeList.stream().filter(like -> like.getType().equals(LikeType.Dislike.stringType)).count()));
+
+                long likes = myLikeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count();
+                long disLikes = myLikeList.stream().filter(like -> like.getType().equals(LikeType.Dislike.stringType)).count();
+                buttonLike.setText(String.valueOf(likes));
+                buttonDislike.setText(String.valueOf(disLikes));
                 if(myLikeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count() > 0) {
                     likeProgressBar.setMax((int) myLikeList.stream().filter(like -> !like.getType().equals(LikeType.None.stringType)).count());
-                    likeProgressBar.setProgress((int) myLikeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count());
+                    likeProgressBar.setProgressBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D81414")));
+                    likeProgressBar.setProgress((int) likes);
+                    String likeDislikeText = likes +" likes - "+ disLikes +" dislikes";
+                    likeDislikeDisplayNumber.setText(likeDislikeText);
+                    likeDislikeDisplayNumber.setVisibility(View.VISIBLE);
                 } else {
-                    likeProgressBar.setMax(2);
-                    likeProgressBar.setProgress(1);
+                    likeProgressBar.setMax(0);
+                    likeProgressBar.setProgressBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                    likeDislikeDisplayNumber.setVisibility(View.INVISIBLE);
                 }
             }
 
