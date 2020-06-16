@@ -68,7 +68,7 @@
             android:layout_marginEnd="155dp"
             android:layout_marginBottom="0dp"
             android:background="@drawable/top_horizontal_bar"
-            android:contentDescription="@string/image_de_la_recette"
+            android:contentDescription="@string/recipe_picture"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/test_logo_padepat_w_name" />
     </RelativeLayout>

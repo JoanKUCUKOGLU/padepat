@@ -152,7 +152,7 @@ public class RecipeActivity extends AppCompatActivity {
                         myLikeList.add(like);
                     }
                 }
-                Log.d("TEST", "Value is: " + nbLikes);
+                Log.d("TEST", getString(R.string.value).toString() + nbLikes);
 
                 long likes = myLikeList.stream().filter(like -> like.getType().equals(LikeType.Like.stringType)).count();
                 long disLikes = myLikeList.stream().filter(like -> like.getType().equals(LikeType.Dislike.stringType)).count();
@@ -175,7 +175,7 @@ public class RecipeActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w("TEST", "Failed to read value.", error.toException());
+                Log.w("TEST", getString(R.string.read_failed), error.toException());
             }
         });
 
@@ -240,7 +240,7 @@ public class RecipeActivity extends AppCompatActivity {
                 TextView text = (TextView)parentLinearLayout.getChildAt(1);
 
                 TextInputEditText editText = new TextInputEditText(RecipeActivity.this);
-                editText.setHint("Editez votre commentaire");
+                editText.setHint(getString(R.string.comment_edit));
                 editText.setLayoutParams(text.getLayoutParams());
                 editText.setText(text.getText());
                 editText.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_baseline_send_35,0);

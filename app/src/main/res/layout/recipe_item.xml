@@ -22,7 +22,7 @@
             android:id="@+id/recipeImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/image_de_la_recette"
+            android:contentDescription="@string/recipe_picture"
             app:srcCompat="@drawable/logopadepat"
             android:transitionName="recipe_transition"/>
 

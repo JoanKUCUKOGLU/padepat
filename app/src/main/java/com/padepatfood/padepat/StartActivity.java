@@ -61,7 +61,7 @@ public class StartActivity extends AppCompatActivity {
             alert.setNegativeButton("OK", null);
             alert.setIcon(android.R.drawable.ic_dialog_alert);
             TextView text = new TextView(StartActivity.this);
-            text.setText("This app needs an Internet connection");
+            text.setText(getString(R.string.internet_needed).toString());
             text.setGravity(Gravity.CENTER);
             alert.setView(text);
             alert.show();
@@ -85,10 +85,11 @@ public class StartActivity extends AppCompatActivity {
                             categoryList.add(recipe.getType());
                         }
                     }
-                    Log.d("TEST", "Value is: " + recipeList);
+                    Log.d("TEST", getString(R.string.value) + recipeList);
                     g.setRecipeList(recipeList);
                     g.setCategoryList(categoryList);
 
+                    // save all recipes in json for offline mode
                     Gson gson = new Gson();
                     String s1 = gson.toJson(dataSnapshot.getValue());
 
@@ -108,7 +109,7 @@ public class StartActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError error) {
                     // Failed to read value
-                    Log.w("TEST", "Failed to read value.", error.toException());
+                    Log.w("TEST", getString(R.string.read_failed), error.toException());
                 }
             });
         } else {

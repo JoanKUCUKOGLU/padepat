@@ -14,7 +14,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ProfilActivity"></activity>
         <activity android:name=".LoginRegisterActivity"/>
-        <activity android:name=".LoginActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

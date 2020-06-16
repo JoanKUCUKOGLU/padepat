@@ -1,16 +1,19 @@
 <resources>
-    <string name="app_name">Padepat</string>
-    <string name="title_activity_ingredients_adapter">Sign in</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="app_name" translatable="false">Padepat</string>
+    <string name="sign_in">Sign in</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password">Password</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="image_de_la_recette">Image de la recette</string>
-    <string name="logo_de_padepat">logo de padepat</string>
-    <string name="ingredients_label">Ingrédients :</string>
-    <string name="etapes_preparation_label">Etapes de préparation :</string>
+    <string name="recipe_picture">Recipe\'s picture</string>
+    <string name="padepat_logo">Padepat\'s logo</string>
+    <string name="ingredients">Ingredients :</string>
+    <string name="preparation_steps">Prepartion\'s steps :</string>
+    <string name="value" translatable="false">Value is</string>
+    <string name="read_failed" translatable="false">Failed to read value</string>
+    <string name="comment_edit">Edit your comment</string>
+    <string name="internet_needed">This app needs an Internet connection</string>
+    <string name="add_comment">Add a comment...</string>
 </resources>
