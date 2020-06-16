@@ -5,9 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.baoyz.widget.PullRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirstAdapter adapter;
     private RecyclerView recyclerView;
-
+    private LinearLayout navBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,23 @@ public class MainActivity extends AppCompatActivity {
                 layout.postDelayed(() ->{
                     layout.setRefreshing(false);
                 },3000);
+            }
+        });
+
+        navBar = findViewById(R.id.navBarLayout);
+        //ImageView homeButton = (ImageView)navBar.getChildAt(0);
+        ImageView favButton = (ImageView)navBar.getChildAt(1);
+        ImageView profileButton = (ImageView)navBar.getChildAt(2);
+        boolean isConnected = false;
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isConnected){
+
+                }else{
+                    Intent newActivity = new Intent(MainActivity.this, LoginRegisterActivity.class);
+                    startActivity(newActivity);
+                }
             }
         });
     }
