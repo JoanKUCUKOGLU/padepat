@@ -14,8 +14,8 @@ import com.squareup.picasso.Picasso;
 public class ProfilActivity extends AppCompatActivity {
     GlobalData globalData;
     TextView userName;
-    TextView dietaryPrefsTitle;
-    LinearLayout dietaryPrefsLayout;
+    TextView dietaryPrefsText;
+    TextView emailText;
     ImageView img;
     private LinearLayout navBar;
 
@@ -28,18 +28,18 @@ public class ProfilActivity extends AppCompatActivity {
         User currentUser = globalData.getCurrentUser();
 
         userName = findViewById(R.id.profilUserNameTextView);
-        dietaryPrefsLayout = findViewById(R.id.dietaryPrefsLayout);
         img = findViewById(R.id.profilImageView);
-        dietaryPrefsTitle = findViewById(R.id.dietaryPrefsTitle);
+        dietaryPrefsText = findViewById(R.id.dietaryPrefsText);
+        emailText = findViewById(R.id.emailText);
 
         Picasso.get().load(currentUser.getImgLink()).fit().centerCrop().error(R.drawable.logopadepat).into(img);
         Picasso.get().setLoggingEnabled(true);
-        String prefAlimentaireText = "Préférence Alimentaire : "+currentUser.getDietaryPrefs();
-        dietaryPrefsTitle.setText(prefAlimentaireText);
+        String prefAlimentaireText = currentUser.getDietaryPrefs();
+        dietaryPrefsText.setText(prefAlimentaireText);
         userName.setText(currentUser.getName());
+        emailText.setText(currentUser.getEmail());
 
         navBar = findViewById(R.id.navBarLayout);
-        //ImageView homeButton = (ImageView)navBar.getChildAt(0);
         ImageView favButton = (ImageView)navBar.getChildAt(1);
         ImageView homeButton = (ImageView)navBar.getChildAt(0);
         boolean isConnected= true;
