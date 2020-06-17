@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,8 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -47,6 +51,7 @@ public class StartActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         g = GlobalData.getInstance();
+        g.setContext(this);
 
         // Check if device is connected to internet
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -66,6 +71,8 @@ public class StartActivity extends AppCompatActivity {
             alert.show();
         }
 
+        g.setConnected(connected);
+
         if (connected) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("/recipes");
@@ -76,10 +83,16 @@ public class StartActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     recipeList = new ArrayList<>();
                     categoryList = new ArrayList<>();
+
+                    saveDataInInternalStorage(dataSnapshot);
+
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Recipe recipe = data.getValue(Recipe.class);
                         recipeList.add(recipe);
 
+                        saveImgInInternalStorage(recipe.getId(), recipe.getImg());
+
+                        // save category list
                         if (!categoryList.contains(recipe.getType())) {
                             categoryList.add(recipe.getType());
                         }
@@ -87,22 +100,6 @@ public class StartActivity extends AppCompatActivity {
                     Log.d("TEST", getString(R.string.value) + recipeList);
                     g.setRecipeList(recipeList);
                     g.setCategoryList(categoryList);
-
-                    // save all recipes in json for offline mode
-                    Gson gson = new Gson();
-                    String s1 = gson.toJson(dataSnapshot.getValue());
-
-                    try {
-                        File dir = getFilesDir();
-                        File file = new File(dir, "recettes.json");
-                        boolean deleted = file.delete();
-
-                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("recettes.json", Context.MODE_PRIVATE));
-                        outputStreamWriter.write(s1);
-                        outputStreamWriter.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
 
                 @Override
@@ -126,6 +123,29 @@ public class StartActivity extends AppCompatActivity {
         loading();
     }
 
+    private void saveDataInInternalStorage(DataSnapshot dataSnapshot) {
+        // save all recipes in json for offline mode
+        Gson gson = new Gson();
+        String s1 = gson.toJson(dataSnapshot.getValue());
+
+        try {
+            File dir = getFilesDir();
+            File file = new File(dir, "recettes.json");
+            boolean deleted = file.delete();
+
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("recettes.json", Context.MODE_PRIVATE));
+            outputStreamWriter.write(s1);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveImgInInternalStorage(Integer id, String src) {
+        DownloadImgFromURL difu = new DownloadImgFromURL(this, id, src);
+        difu.execute();
+    }
+
     public void loading() {
         // Load MainPage
         Thread loadingThread = new Thread() {
@@ -133,7 +153,7 @@ public class StartActivity extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(3000);  //Delay of 3 seconds
+                    sleep(5000);  //Delay of 5 seconds
                 } catch (Exception e) {
                 } finally {
                     Intent i = new Intent(StartActivity.this, MainActivity.class);
@@ -143,16 +163,5 @@ public class StartActivity extends AppCompatActivity {
             }
         };
         loadingThread.start();
-    }
-
-    private Bitmap drawable_from_url(String url) throws java.net.MalformedURLException, java.io.IOException {
-
-        HttpURLConnection connection = (HttpURLConnection)new URL(url) .openConnection();
-        connection.setRequestProperty("User-agent","Mozilla/4.0");
-
-        connection.connect();
-        InputStream input = connection.getInputStream();
-
-        return BitmapFactory.decodeStream(input);
     }
 }

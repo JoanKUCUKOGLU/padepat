@@ -2,6 +2,7 @@ package com.padepatfood.padepat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private List<Recipe> recipes;
+
     public RecipeAdapter(List<Recipe> recipes) {
         this.recipes = recipes;
     }
@@ -35,10 +38,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final RecipeAdapter.ViewHolder holder, int position) {
         final Recipe recipe = recipes.get(position);
+        GlobalData g = GlobalData.getInstance();
+        File dir = g.getContext().getFilesDir();
+        File imgDir = new File(dir, "recipesImages");
+        File imgToDisplay = new File(imgDir, "IMG_RECIPE_" + recipe.getId() + ".png");
 
         holder.recipeName.setText(recipe.getName());
         holder.setIsRecyclable(false);
-        Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(holder.recipeImage);
+        Picasso.get().load(recipe.getImg()).fit().centerCrop()
+                .error(Drawable.createFromPath(imgToDisplay.getPath()))
+                .into(holder.recipeImage);
         Picasso.get().setLoggingEnabled(true);
 
         holder.recipeImage.setOnClickListener(new View.OnClickListener() {
