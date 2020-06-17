@@ -52,6 +52,8 @@ public class RecipeActivity extends AppCompatActivity {
     LinearLayout commentsLayout;
     TextInputEditText addCommentText;
 
+    private LinearLayout navBar;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +62,39 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("recipe");
+        currentDeviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        setTransition();
+        findViews();
+        setPage();
+        manageLikesDisplay();
+        navBarGestion();
+    }
+
+    //Crée la transition pour l'activity
+    private void setTransition() {
         Fade fade = new Fade();
         View decor = getWindow().getDecorView();
         fade.excludeTarget(decor.findViewById(R.id.action_bar_container), true);
         fade.excludeTarget(android.R.id.statusBarBackground, true);
         fade.excludeTarget(android.R.id.navigationBarBackground, true);
-
         getWindow().setEnterTransition(fade);
         getWindow().setExitTransition(fade);
+    }
 
-        ImageView recipeImg = findViewById(R.id.recipeImg);
-
-        currentDeviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
+    //Regroupe tous les findViewById
+    private void findViews(){
         likeProgressBar = findViewById(R.id.likeProgressBar);
         buttonLike = findViewById(R.id.buttonLike);
         buttonDislike = findViewById(R.id.buttonDislike);
         commentsLayout = findViewById(R.id.commentLayout);
         addCommentText = findViewById(R.id.addCommentTextView);
+    }
 
+    //Remplis les view avec les datas correspondantes
+    @SuppressLint("ClickableViewAccessibility")
+    private void setPage(){
+        ImageView recipeImg = findViewById(R.id.recipeImg);
         Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(recipeImg);
 
         TextView recipeNameText = findViewById(R.id.recipeName);
@@ -88,36 +103,19 @@ public class RecipeActivity extends AppCompatActivity {
         TextView recipePriceText = findViewById(R.id.recipePrice);
         recipePriceText.setText("~ "+recipe.getPrice() + " €");
 
-        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        textParams.setMargins(0, 0, 0, 30);
-
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.setMargins(0, 0, 0, 50);
 
         LinearLayout ingredientsLinearLayout = (LinearLayout)findViewById(R.id.ingredientsLayout);
-        for(String ingredient : recipe.getIngredients()){
-            TextView ingredientText = new TextView(this);
-            ingredientText.setText(ingredient);
-            ingredientText.setTextSize(18);
-            ingredientText.setLayoutParams(textParams);
-            ingredientsLinearLayout.addView(ingredientText);
-        }
-        ingredientsLinearLayout.setLayoutParams(layoutParams);
+        putDataInLinearLayout(ingredientsLinearLayout,recipe.getIngredients());
 
         LinearLayout stepsLinearLayout = (LinearLayout)findViewById(R.id.stepsLayout);
-        for(String step : recipe.getSteps()){
-            TextView stepText = new TextView(this);
-            stepText.setText(step);
-            stepText.setTextSize(18);
-            stepText.setLayoutParams(textParams);
-            stepsLinearLayout.addView(stepText);
-        }
+        putDataInLinearLayout(stepsLinearLayout,recipe.getSteps());
+
+        params.bottomMargin = 50;
+        ingredientsLinearLayout.setLayoutParams(params);
 
         buttonLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +131,27 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
+        addCommentText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (addCommentText.getRight() - addCommentText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        addComment();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    //Gere l'affichage les likes dans la progress bar et dans les boutons
+    private void manageLikesDisplay(){
         // DATABASE
         database = FirebaseDatabase.getInstance();
         likeRef = database.getReference("/likes");
@@ -178,52 +197,37 @@ public class RecipeActivity extends AppCompatActivity {
                 Log.w("TEST", getString(R.string.read_failed), error.toException());
             }
         });
-
-        addCommentText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (addCommentText.getRight() - addCommentText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        addComment();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
     }
 
+    //Remplit les linearLayout avec les items de la liste passée en paramètre
+    private void putDataInLinearLayout(LinearLayout linearLayout,List<String> stringList){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.bottomMargin = 30;
+
+        for(String text : stringList){
+            TextView newTextView = new TextView(this);
+            newTextView.setText(text);
+            newTextView.setTextSize(18);
+            newTextView.setLayoutParams(params);
+            linearLayout.addView(newTextView);
+        }
+    }
+
+    //Ajoute un commentaire
     private void addComment() {
 
         hideKeyboard(RecipeActivity.this);
-        LinearLayout newLinearLayout = new LinearLayout(RecipeActivity.this);
-        newLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
+        commentsLayout.addView(generateCommentLayoutChild());
+        addCommentText.setText(null);
+        addCommentText.clearFocus();
+        addCommentText.setCursorVisible(false);
+    }
 
-
-        TextView userTextView = new TextView(RecipeActivity.this);
-        userTextView.setTextSize(18);
-        userTextView.setText("[USER NAME]");
-        userTextView.setTypeface(null,Typeface.BOLD);
-        params.setMargins(0, 5,0,5);
-        userTextView.setLayoutParams(params);
-
-        TextView newTextView = new TextView(RecipeActivity.this);
-        newTextView.setTextSize(18);
-        newTextView.setText(addCommentText.getText().toString());
-        newTextView.setLayoutParams(params);
-
-        newLinearLayout.addView(userTextView);
-        newLinearLayout.addView(newTextView);
-
+    //Genere la zone ou apparaissent les actions liées au commentaire courant
+    private LinearLayout generateCommentActionLayout() {
         LinearLayout.LayoutParams actionLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         actionLayout.setMargins(5,5,20,5);
         LinearLayout actionLinearLayout = new LinearLayout(RecipeActivity.this);
@@ -231,7 +235,6 @@ public class RecipeActivity extends AppCompatActivity {
         ImageView editImg = new ImageView(RecipeActivity.this);
         editImg.setImageResource(R.drawable.ic_baseline_edit_24);
         editImg.setLayoutParams(actionLayout);
-
         editImg.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -273,22 +276,47 @@ public class RecipeActivity extends AppCompatActivity {
                 });
             }
         });
-
         ImageView deleteImg = new ImageView(RecipeActivity.this);
         deleteImg.setImageResource(R.drawable.ic_baseline_delete_24);
         deleteImg.setLayoutParams(actionLayout);
         deleteImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               LinearLayout parentLinearLayout = (LinearLayout) deleteImg.getParent().getParent();
-               commentsLayout.removeView(parentLinearLayout);
+                LinearLayout parentLinearLayout = (LinearLayout) deleteImg.getParent().getParent();
+                commentsLayout.removeView(parentLinearLayout);
             }
         });
-
         actionLinearLayout.addView(editImg);
         actionLinearLayout.addView(deleteImg);
+        return actionLinearLayout;
+    }
 
-        newLinearLayout.addView(actionLinearLayout);
+    //Genere la zone ou apparait le commentaire courant
+    private LinearLayout generateCommentLayoutChild(){
+        LinearLayout newLinearLayout = new LinearLayout(RecipeActivity.this);
+        newLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        int textSize = 18;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        TextView userTextView = new TextView(RecipeActivity.this);
+        userTextView.setTextSize(textSize);
+        userTextView.setText("[USER NAME]");
+        userTextView.setTypeface(null,Typeface.BOLD);
+        params.setMargins(0, 5,0,5);
+        userTextView.setLayoutParams(params);
+
+        TextView newTextView = new TextView(RecipeActivity.this);
+        newTextView.setTextSize(textSize);
+        newTextView.setText(addCommentText.getText().toString());
+        newTextView.setLayoutParams(params);
+
+        newLinearLayout.addView(userTextView);
+        newLinearLayout.addView(newTextView);
+
+        newLinearLayout.addView(generateCommentActionLayout());
 
         View separator = new View(RecipeActivity.this);
         separator.setBackgroundColor(Color.parseColor("#E6D1A1"));
@@ -297,16 +325,14 @@ public class RecipeActivity extends AppCompatActivity {
         separator.setLayoutParams(separatorLayout);
         newLinearLayout.addView(separator);
 
-        addCommentText.setText(null);
-        addCommentText.clearFocus();
-        addCommentText.setCursorVisible(false);
 
         params.setMargins(20, 10,20,10);
         newLinearLayout.setLayoutParams(params);
 
-        commentsLayout.addView(newLinearLayout);
+        return newLinearLayout;
     }
 
+    //Gere la mise a jour des likes
     private void updateLike(LikeType type) {
         Like currentLike = new Like();
         // New line in DB
@@ -320,6 +346,7 @@ public class RecipeActivity extends AppCompatActivity {
         likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
     }
 
+    //Permet de forcer la fermeture du clavier
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -329,6 +356,22 @@ public class RecipeActivity extends AppCompatActivity {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    //Gestion de la navBar
+    public void navBarGestion(){
+        navBar = findViewById(R.id.navBarLayout);
+        ImageView favButton = (ImageView)navBar.getChildAt(1);
+        ImageView homeButton = (ImageView)navBar.getChildAt(0);
+        boolean isConnected= true;
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            Intent newActivity;
+            @Override
+            public void onClick(View v) {
+                newActivity = new Intent(RecipeActivity.this, MainActivity.class);
+                startActivity(newActivity);
+            }
+        });
     }
 
     public enum LikeType {

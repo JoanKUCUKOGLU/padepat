@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/navBarLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,13 +38,13 @@
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="16dp"
                     android:contentDescription="@string/recipe_picture"
+                    android:transitionName="recipe_transition"
                     app:layout_constraintBottom_toTopOf="@+id/recipeName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/logopadepat"
-                    android:transitionName="recipe_transition"/>
+                    app:srcCompat="@drawable/logopadepat" />
 
                 <TextView
                     android:id="@+id/recipeName"
@@ -252,5 +252,44 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/navBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bot_horizontal_bar"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/homeImgButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_home_45" />
+
+        <ImageView
+            android:id="@+id/favImgButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_star_border_35" />
+
+        <ImageView
+            android:id="@+id/userImgButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_account_circle_45" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
