@@ -42,13 +42,19 @@ public class ProfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
         getSupportActionBar().hide();
-        
+
+        Intent srcIntent = getIntent();
+        String flagActivity = "NONE";
+        if(srcIntent.hasExtra("flagActivity")){
+            flagActivity = srcIntent.getStringExtra("flagActivity");
+        }
+
         globalData = GlobalData.getInstance();
         currentUser = globalData.getCurrentUser();
 
         initData();
         setPage();
-        navBarGestion();
+        NavBarGestion.manage("PROFILE",flagActivity,ProfilActivity.this);
     }
 
     //Cherche tous les elements avec findViewById pour les attribuer

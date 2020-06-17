@@ -27,8 +27,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         GlobalData.getInstance().setCurrentUser(new User("Luciiiie","User@Test.com","MDP","https://i0.wp.com/powerviewltd.com/wp-content/uploads/2018/03/profile-img-1.jpg?ssl=1","Vegan"));
-
         getSupportActionBar().hide();
+
+        Intent srcIntent = getIntent();
+        String flagActivity = "NONE";
+        if(srcIntent.hasExtra("flagActivity")){
+            flagActivity = srcIntent.getStringExtra("flagActivity");
+        }
 
         Fade fade = new Fade();
         View decor = getWindow().getDecorView();
@@ -56,24 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 },3000);
             }
         });
-
-        navBar = findViewById(R.id.navBarLayout);
-        //ImageView homeButton = (ImageView)navBar.getChildAt(0);
-        ImageView favButton = (ImageView)navBar.getChildAt(1);
-        ImageView profileButton = (ImageView)navBar.getChildAt(2);
-        boolean isConnected= true;
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            Intent newActivity;
-            @Override
-            public void onClick(View v) {
-                if(isConnected){
-                    newActivity = new Intent(MainActivity.this, ProfilActivity.class);
-                }else{
-                     newActivity = new Intent(MainActivity.this, LoginRegisterActivity.class);
-                }
-                startActivity(newActivity);
-            }
-        });
+        NavBarGestion.manage("MAIN",flagActivity,MainActivity.this);
     }
 }
 
