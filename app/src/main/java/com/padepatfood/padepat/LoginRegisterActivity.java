@@ -1,9 +1,17 @@
 package com.padepatfood.padepat;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -76,9 +84,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
         setEditTextParams(emailInput,"Email",params);
 
         passwordInput = new EditText(LoginRegisterActivity.this);
+        passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
         setEditTextParams(passwordInput,"Mot de passe",params);
 
         passwordConfirmationInput = new EditText(LoginRegisterActivity.this);
+        passwordConfirmationInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
         setEditTextParams(passwordConfirmationInput,"Confirmation mot de passe",params);
 
         saveButton = new Button(LoginRegisterActivity.this);
@@ -92,6 +102,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     //Affiche les éléments liés au login
     private void setLoginPage(){
         deletedChildrenFromIndex();
+        passwordInput.setText(null);
         loginRegisterLinearLayout.addView(emailInput);
         loginRegisterLinearLayout.addView(passwordInput);
 
@@ -113,6 +124,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         deletedChildrenFromIndex();
         loginRegisterLinearLayout.addView(pseudoInput);
         loginRegisterLinearLayout.addView(emailInput);
+        passwordInput.setText(null);
         loginRegisterLinearLayout.addView(passwordInput);
         loginRegisterLinearLayout.addView(passwordConfirmationInput);
         saveButton.setText("S'enregister");
@@ -131,6 +143,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
     //Affiche les boutons de choix "Se connecter" et "S'enregistrer"
     private void setStartPage(){
         deletedChildrenFromIndex();
+        pseudoInput.setText(null);
+        emailInput.setText(null);
+        passwordInput.setText(null);
+        passwordConfirmationInput.setText(null);
         loginRegisterLinearLayout.addView(registerButton);
         loginRegisterLinearLayout.addView(loginButton);
         isStartPage = true;
@@ -160,6 +176,23 @@ public class LoginRegisterActivity extends AppCompatActivity {
         }else{
             setStartPage();
         }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    Log.d("focus", "touchevent");
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 
 }
