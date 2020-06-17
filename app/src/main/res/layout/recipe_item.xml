@@ -23,8 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/recipe_picture"
-            app:srcCompat="@drawable/logopadepat"
-            android:transitionName="recipe_transition"/>
+            android:scaleType="centerCrop"
+            android:transitionName="recipe_transition"
+            app:srcCompat="@drawable/logopadepat" />
 
     </androidx.cardview.widget.CardView>
 
