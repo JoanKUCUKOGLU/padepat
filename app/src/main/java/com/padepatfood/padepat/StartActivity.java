@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,15 +61,6 @@ public class StartActivity extends AppCompatActivity {
             connected = true;
         } else {
             connected = false;
-            AlertDialog.Builder alert = new AlertDialog.Builder(StartActivity.this);
-            alert.setTitle("Error");
-            alert.setNegativeButton("OK", null);
-            alert.setIcon(android.R.drawable.ic_dialog_alert);
-            TextView text = new TextView(StartActivity.this);
-            text.setText(getString(R.string.internet_needed).toString());
-            text.setGravity(Gravity.CENTER);
-            alert.setView(text);
-            alert.show();
         }
 
         g.setConnected(connected);
@@ -108,19 +100,32 @@ public class StartActivity extends AppCompatActivity {
                     Log.w("TEST", getString(R.string.read_failed), error.toException());
                 }
             });
+            loading();
         } else {
             recipeList = JSONDecoder.getRecipesFromJson(this);
 
-            categoryList = new ArrayList<>();
-            for(Recipe recipe : recipeList) {
-                if (!categoryList.contains(recipe.getType())) {
-                    categoryList.add(recipe.getType());
+            if(recipeList != null) {
+                categoryList = new ArrayList<>();
+                for(Recipe recipe : recipeList) {
+                    if (!categoryList.contains(recipe.getType())) {
+                        categoryList.add(recipe.getType());
+                    }
                 }
+                g.setRecipeList(recipeList);
+                g.setCategoryList(categoryList);
+                loading();
+            } else {
+                AlertDialog.Builder alert = new AlertDialog.Builder(StartActivity.this);
+                alert.setTitle("Error");
+                alert.setNegativeButton("OK", (dialog, which) -> finish());
+                alert.setIcon(android.R.drawable.ic_dialog_alert);
+                TextView text = new TextView(StartActivity.this);
+                text.setText("This app needs an Internet connection for the first connection");
+                text.setGravity(Gravity.CENTER);
+                alert.setView(text);
+                alert.show();
             }
-            g.setRecipeList(recipeList);
-            g.setCategoryList(categoryList);
         }
-        loading();
     }
 
     private void saveDataInInternalStorage(DataSnapshot dataSnapshot) {
