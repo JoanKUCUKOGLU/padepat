@@ -11,7 +11,7 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/navBarLayout"
+        app:layout_constraintBottom_toTopOf="@+id/EditSavebutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +47,16 @@
                     app:layout_constraintTop_toTopOf="@+id/view"
                     tools:text="Nom du profil" />
 
+                <EditText
+                    android:id="@+id/editUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/profilUserNameTextView"
+                    app:layout_constraintEnd_toEndOf="@+id/profilUserNameTextView"
+                    app:layout_constraintStart_toStartOf="@+id/profilUserNameTextView"
+                    app:layout_constraintTop_toTopOf="@+id/profilUserNameTextView" />
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewProfile"
                     android:layout_width="100dp"
@@ -67,6 +77,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/editPhotoCardView"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     app:cardBackgroundColor="#C3FFFFFF"
@@ -75,7 +86,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/cardViewProfile">
 
                     <ImageView
-                        android:id="@+id/imageView4"
+                        android:id="@+id/editPhotoImg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_baseline_edit_24" />
@@ -97,13 +108,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/informationsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/dietaryPrefLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal|center_vertical"
@@ -131,6 +143,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/emailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -159,6 +172,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/oldPwdLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -187,6 +201,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/newPwdLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -215,6 +230,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/confirmNewPwdLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -249,7 +265,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/EditSavebutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
