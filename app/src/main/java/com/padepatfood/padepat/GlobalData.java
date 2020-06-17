@@ -1,10 +1,16 @@
 package com.padepatfood.padepat;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalData {
     private static GlobalData instance;
+
+    private Context context;
+
+    private Boolean connected;
 
     private List<Recipe> recipeList;
     private List<String> categoryList;
@@ -18,6 +24,22 @@ public class GlobalData {
 
     public List<Recipe> getRecipeList() {
         return recipeList;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public Boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(Boolean connected) {
+        this.connected = connected;
     }
 
     public void setRecipeList(List<Recipe> recipeList) {

@@ -4,9 +4,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,8 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -47,6 +52,7 @@ public class StartActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         g = GlobalData.getInstance();
+        g.setContext(this);
 
         // Check if device is connected to internet
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -55,16 +61,9 @@ public class StartActivity extends AppCompatActivity {
             connected = true;
         } else {
             connected = false;
-            AlertDialog.Builder alert = new AlertDialog.Builder(StartActivity.this);
-            alert.setTitle("Error");
-            alert.setNegativeButton("OK", null);
-            alert.setIcon(android.R.drawable.ic_dialog_alert);
-            TextView text = new TextView(StartActivity.this);
-            text.setText(getString(R.string.internet_needed).toString());
-            text.setGravity(Gravity.CENTER);
-            alert.setView(text);
-            alert.show();
         }
+
+        g.setConnected(connected);
 
         if (connected) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -76,10 +75,16 @@ public class StartActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     recipeList = new ArrayList<>();
                     categoryList = new ArrayList<>();
+
+                    saveDataInInternalStorage(dataSnapshot);
+
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Recipe recipe = data.getValue(Recipe.class);
                         recipeList.add(recipe);
 
+                        saveImgInInternalStorage(recipe.getId(), recipe.getImg());
+
+                        // save category list
                         if (!categoryList.contains(recipe.getType())) {
                             categoryList.add(recipe.getType());
                         }
@@ -87,22 +92,6 @@ public class StartActivity extends AppCompatActivity {
                     Log.d("TEST", getString(R.string.value) + recipeList);
                     g.setRecipeList(recipeList);
                     g.setCategoryList(categoryList);
-
-                    // save all recipes in json for offline mode
-                    Gson gson = new Gson();
-                    String s1 = gson.toJson(dataSnapshot.getValue());
-
-                    try {
-                        File dir = getFilesDir();
-                        File file = new File(dir, "recettes.json");
-                        boolean deleted = file.delete();
-
-                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("recettes.json", Context.MODE_PRIVATE));
-                        outputStreamWriter.write(s1);
-                        outputStreamWriter.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
 
                 @Override
@@ -111,19 +100,55 @@ public class StartActivity extends AppCompatActivity {
                     Log.w("TEST", getString(R.string.read_failed), error.toException());
                 }
             });
+            loading();
         } else {
             recipeList = JSONDecoder.getRecipesFromJson(this);
 
-            categoryList = new ArrayList<>();
-            for(Recipe recipe : recipeList) {
-                if (!categoryList.contains(recipe.getType())) {
-                    categoryList.add(recipe.getType());
+            if(recipeList != null) {
+                categoryList = new ArrayList<>();
+                for(Recipe recipe : recipeList) {
+                    if (!categoryList.contains(recipe.getType())) {
+                        categoryList.add(recipe.getType());
+                    }
                 }
+                g.setRecipeList(recipeList);
+                g.setCategoryList(categoryList);
+                loading();
+            } else {
+                AlertDialog.Builder alert = new AlertDialog.Builder(StartActivity.this);
+                alert.setTitle("Error");
+                alert.setNegativeButton("OK", (dialog, which) -> finish());
+                alert.setIcon(android.R.drawable.ic_dialog_alert);
+                TextView text = new TextView(StartActivity.this);
+                text.setText("This app needs an Internet connection for the first connection");
+                text.setGravity(Gravity.CENTER);
+                alert.setView(text);
+                alert.show();
             }
-            g.setRecipeList(recipeList);
-            g.setCategoryList(categoryList);
         }
-        loading();
+    }
+
+    private void saveDataInInternalStorage(DataSnapshot dataSnapshot) {
+        // save all recipes in json for offline mode
+        Gson gson = new Gson();
+        String s1 = gson.toJson(dataSnapshot.getValue());
+
+        try {
+            File dir = getFilesDir();
+            File file = new File(dir, "recettes.json");
+            boolean deleted = file.delete();
+
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("recettes.json", Context.MODE_PRIVATE));
+            outputStreamWriter.write(s1);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveImgInInternalStorage(Integer id, String src) {
+        DownloadImgFromURL difu = new DownloadImgFromURL(this, id, src);
+        difu.execute();
     }
 
     public void loading() {
@@ -133,7 +158,7 @@ public class StartActivity extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(3000);  //Delay of 3 seconds
+                    sleep(5000);  //Delay of 5 seconds
                 } catch (Exception e) {
                 } finally {
                     Intent i = new Intent(StartActivity.this, MainActivity.class);
@@ -143,16 +168,5 @@ public class StartActivity extends AppCompatActivity {
             }
         };
         loadingThread.start();
-    }
-
-    private Bitmap drawable_from_url(String url) throws java.net.MalformedURLException, java.io.IOException {
-
-        HttpURLConnection connection = (HttpURLConnection)new URL(url) .openConnection();
-        connection.setRequestProperty("User-agent","Mozilla/4.0");
-
-        connection.connect();
-        InputStream input = connection.getInputStream();
-
-        return BitmapFactory.decodeStream(input);
     }
 }

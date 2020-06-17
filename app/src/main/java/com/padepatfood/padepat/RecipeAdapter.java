@@ -2,6 +2,7 @@ package com.padepatfood.padepat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private List<Recipe> recipes;
+
     public RecipeAdapter(List<Recipe> recipes) {
         this.recipes = recipes;
     }
@@ -35,11 +39,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final RecipeAdapter.ViewHolder holder, int position) {
         final Recipe recipe = recipes.get(position);
+        GlobalData g = GlobalData.getInstance();
 
         holder.recipeName.setText(recipe.getName());
         holder.setIsRecyclable(false);
-        Picasso.get().load(recipe.getImg()).fit().centerCrop().error(R.drawable.logopadepat).into(holder.recipeImage);
-        Picasso.get().setLoggingEnabled(true);
+        if(g.isConnected()) {
+            Picasso.get().load(recipe.getImg()).fit().centerCrop()
+                    .error(R.drawable.logopadepat)
+                    .into(holder.recipeImage);
+            Picasso.get().setLoggingEnabled(true);
+        } else {
+            File dir = g.getContext().getFilesDir();
+            File imgDir = new File(dir, "recipesImages");
+            File imgToDisplay = new File(imgDir, "IMG_RECIPE_" + recipe.getId() + ".png");
+
+            holder.recipeImage.setImageDrawable(Drawable.createFromPath(imgToDisplay.getPath()));
+        }
 
         holder.recipeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +72,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         return recipes.size();
     }
 
-    class ViewHolder extends  RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
         final TextView recipeName;
         final ImageView recipeImage;
 
@@ -65,7 +80,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             super(itemView);
             this.recipeImage =  itemView.findViewById(R.id.recipeImg);
             this.recipeName = itemView.findViewById(R.id.recipeName);
-
         }
     }
 }
