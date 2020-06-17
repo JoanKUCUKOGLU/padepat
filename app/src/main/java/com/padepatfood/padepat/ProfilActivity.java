@@ -41,7 +41,8 @@ public class ProfilActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
-
+        getSupportActionBar().hide();
+        
         globalData = GlobalData.getInstance();
         currentUser = globalData.getCurrentUser();
 
