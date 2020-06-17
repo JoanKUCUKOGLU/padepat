@@ -22,10 +22,10 @@
 
         <ImageView
             android:id="@+id/registerLogo"
-            android:layout_width="300dp"
+            android:layout_width="310dp"
             android:layout_height="190dp"
             android:layout_marginBottom="30dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/logo_padepat_fond_transparent_sans_bordures" />
 
         <Button
@@ -50,6 +50,18 @@
             android:textColor="#000000" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/goBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/button"
+        android:text="Button"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
