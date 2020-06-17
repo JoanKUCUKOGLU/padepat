@@ -7,26 +7,30 @@
     android:background="#FCF0CF"
     tools:context=".LoginRegisterActivity">
 
-    <LinearLayout
-        android:id="@+id/loginRegisterLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/registerLogo"
+        android:layout_width="310dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="32dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_padepat_fond_transparent_sans_bordures" />
 
-        <ImageView
-            android:id="@+id/registerLogo"
-            android:layout_width="310dp"
-            android:layout_height="190dp"
-            android:layout_marginBottom="30dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/logo_padepat_fond_transparent_sans_bordures" />
+    <LinearLayout
+        android:id="@+id/loginRegisterLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/goBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerLogo">
 
         <Button
             android:id="@+id/regiserButton"

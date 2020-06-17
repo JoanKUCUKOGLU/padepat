@@ -101,7 +101,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     //Affiche les éléments liés au login
     private void setLoginPage(){
-        deletedChildrenFromIndex();
+        loginRegisterLinearLayout.removeAllViews();
         passwordInput.setText(null);
         loginRegisterLinearLayout.addView(emailInput);
         loginRegisterLinearLayout.addView(passwordInput);
@@ -121,7 +121,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     //Affiche les éléments liés a la création d'un nouveau compte
     private void setRegisterPage(){
-        deletedChildrenFromIndex();
+        loginRegisterLinearLayout.removeAllViews();
         loginRegisterLinearLayout.addView(pseudoInput);
         loginRegisterLinearLayout.addView(emailInput);
         passwordInput.setText(null);
@@ -142,7 +142,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     //Affiche les boutons de choix "Se connecter" et "S'enregistrer"
     private void setStartPage(){
-        deletedChildrenFromIndex();
+        loginRegisterLinearLayout.removeAllViews();
         pseudoInput.setText(null);
         emailInput.setText(null);
         passwordInput.setText(null);
@@ -159,13 +159,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         editText.setEms(10);
         editText.setLayoutParams(params);
         editText.setHint(hintText);
-    }
-    //Fonction créée pour éviter la redondance de code - supprime tous les éléments contenus dans le LinearLayout à l'exepté du 1er item
-    private void deletedChildrenFromIndex(){
-        int childNubmer = loginRegisterLinearLayout.getChildCount();
-        for(int i=1;i<childNubmer;i++){
-            loginRegisterLinearLayout.removeViewAt(1);
-        }
     }
 
     @Override
