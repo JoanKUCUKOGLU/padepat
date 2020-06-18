@@ -23,4 +23,7 @@
     <string name="email_already_used">Adresse mail déjà utilisée</string>
     <string name="passwords_dont_match">Les mot de passe ne correspondent pas</string>
     <string name="password_email_invalid">Adresse mail ou mot de passe invalide</string>
+    <string name="error">Erreur !</string>
+    <string name="add_comment_impossible">Tu ne peux pas ajouter de commentaire si tu n\'es pas connecté :(</string>
+    <string name="cancel">Annuler</string>
 </resources>

@@ -26,4 +26,7 @@
     <string name="email_already_used">Email already used</string>
     <string name="passwords_dont_match">Passwords don\'t match</string>
     <string name="password_email_invalid">Email or password is invalid</string>
+    <string name="error">Error !</string>
+    <string name="add_comment_impossible">You can\'t add a comment if you are not logged :(</string>
+    <string name="cancel">Cancel</string>
 </resources>

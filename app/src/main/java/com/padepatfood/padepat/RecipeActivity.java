@@ -1,6 +1,5 @@
 package com.padepatfood.padepat;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -454,7 +453,11 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     private void showErrorPage(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(RecipeActivity.this);
+
+        AlertDialog alertDialog = new AlertDialog();
+        alertDialog.showDialog(this, getString(R.string.add_comment_impossible), RecipeActivity.this);
+
+        /*AlertDialog.Builder alert = new AlertDialog.Builder(RecipeActivity.this);
         alert.setTitle("Error");
 
         LinearLayout layout = new LinearLayout(RecipeActivity.this);
@@ -482,7 +485,7 @@ public class RecipeActivity extends AppCompatActivity {
         layout.addView(connectionButton);
 
         alert.setView(layout);
-        alert.show();
+        alert.show();*/
     }
 }
 
