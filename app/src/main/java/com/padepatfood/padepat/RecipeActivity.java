@@ -47,10 +47,10 @@ public class RecipeActivity extends AppCompatActivity {
     private Button buttonLike;
     private Button buttonDislike;
 
-    FirebaseDatabase database;
-    DatabaseReference likeRef;
-    LinearLayout commentsLayout;
-    TextInputEditText addCommentText;
+    private FirebaseDatabase database;
+    private DatabaseReference likeRef;
+    private LinearLayout commentsLayout;
+    private TextInputEditText addCommentText;
 
     private LinearLayout navBar;
 

@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 

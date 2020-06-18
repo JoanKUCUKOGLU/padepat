@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //GlobalData.getInstance().setCurrentUser(new User("Luciiiie","User@Test.com","MDP","https://i0.wp.com/powerviewltd.com/wp-content/uploads/2018/03/profile-img-1.jpg?ssl=1","Vegan"));
+        g = GlobalData.getInstance();
+
         getSupportActionBar().hide();
 
         Intent srcIntent = getIntent();

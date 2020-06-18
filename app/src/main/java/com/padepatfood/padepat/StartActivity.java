@@ -158,7 +158,7 @@ public class StartActivity extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(5000);  //Delay of 5 seconds
+                    sleep(3000);  //Delay of 3 seconds
                 } catch (Exception e) {
                 } finally {
                     Intent i = new Intent(StartActivity.this, MainActivity.class);

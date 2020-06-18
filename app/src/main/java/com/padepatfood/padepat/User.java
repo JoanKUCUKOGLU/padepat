@@ -7,39 +7,33 @@ import java.util.List;
 
 public class User {
 
+    private Integer id;
     private String name;
     private String email;
     private String password;
-    private List<String> favoriteRecipes;
+    private List<Integer> favoriteRecipes;
     private String imgLink;
     private String dietaryPrefs;
 
     public User() {
     }
 
-    public User(String name, String email, String password,String imgLink, String dietaryPrefs) {
+    public User(Integer id, String name, String email, String password,String imgLink, String dietaryPrefs) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.imgLink = imgLink;
-        this.dietaryPrefs = dietaryPrefs;
         favoriteRecipes = new ArrayList<>();
-    }
-
-    public String getImgLink() {
-        return imgLink;
-    }
-
-    public void setImgLink(String imgLink) {
         this.imgLink = imgLink;
-    }
-
-    public String getDietaryPrefs() {
-        return dietaryPrefs;
-    }
-
-    public void setDietaryPrefs(String dietaryPrefs) {
         this.dietaryPrefs = dietaryPrefs;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -66,11 +60,27 @@ public class User {
         this.password = password;
     }
 
-    public List<String> getFavoriteRecipes() {
+    public List<Integer> getFavoriteRecipes() {
         return favoriteRecipes;
     }
 
-    public void setFavoriteRecipes(List<String> favoriteRecipes) {
+    public void setFavoriteRecipes(List<Integer> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
+    }
+
+    public String getImgLink() {
+        return imgLink;
+    }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
+    }
+
+    public String getDietaryPrefs() {
+        return dietaryPrefs;
+    }
+
+    public void setDietaryPrefs(String dietaryPrefs) {
+        this.dietaryPrefs = dietaryPrefs;
     }
 }
