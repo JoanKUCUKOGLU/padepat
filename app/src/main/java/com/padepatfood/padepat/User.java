@@ -1,7 +1,5 @@
 package com.padepatfood.padepat;
 
-import android.widget.ImageView;
-
 import java.util.ArrayList;
 import java.util.List;
 

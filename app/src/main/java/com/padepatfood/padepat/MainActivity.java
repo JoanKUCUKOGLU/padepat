@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {

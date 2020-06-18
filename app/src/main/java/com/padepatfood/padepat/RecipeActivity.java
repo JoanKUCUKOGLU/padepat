@@ -9,7 +9,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.transition.Fade;
 import android.util.Log;
 import android.view.MotionEvent;
