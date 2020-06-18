@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -143,7 +144,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         pseudoInput = new EditText(LoginRegisterActivity.this);
         setEditTextParams(pseudoInput,"Pseudonyme",params, R.drawable.ic_baseline_face_24);
 
-
         emailInput = new EditText(LoginRegisterActivity.this);
         setEditTextParams(emailInput,"Email",params, R.drawable.ic_baseline_alternate_email_24);
 
@@ -164,17 +164,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isInConnection = true;
-
-                for(int i=0; i< loginRegisterLinearLayout.getChildCount();i++){
-                    loginRegisterLinearLayout.getChildAt(i).setEnabled(false);
-                }
-                loadingItem.setVisibility(View.VISIBLE);
-                goBackButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
-                goBackButton.setEnabled(false);
-                saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
-                saveButton.setEnabled(false);
-
                 if(isRegister) {
                     registerUser();
                 } else {
@@ -253,6 +242,23 @@ public class LoginRegisterActivity extends AppCompatActivity {
         editText.setCompoundDrawablePadding(50);
     }
 
+    private void setEnableToAllElements(boolean toggle){
+        for(int i=0; i< loginRegisterLinearLayout.getChildCount();i++){
+            loginRegisterLinearLayout.getChildAt(i).setEnabled(toggle);
+        }
+        goBackButton.setEnabled(toggle);
+        saveButton.setEnabled(toggle);
+        if(!toggle){
+            loadingItem.setVisibility(View.VISIBLE);
+            goBackButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
+            saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
+        }else{
+            loadingItem.setVisibility(View.INVISIBLE);
+            goBackButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.button)));
+            saveButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.button)));
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if(!isInConnection){
@@ -285,9 +291,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     // MANAGE USER SECTION -------------------
     private void registerUser() {
-        if(isNicknameValid() && isEmailValid() && isEmailAvailable() && isPasswordValid()) {
+        if(isNicknameValid() && isEmailValid() && isEmailAvailable() && isPasswordValid() && isPasswordConfirmationValid()) {
+            isInConnection = true;
+            setEnableToAllElements(false);
             String hashed = encodePassword();
-
             User newUser = new User(
                     userList.size(),
                     pseudoInput.getText().toString(),
@@ -299,20 +306,47 @@ public class LoginRegisterActivity extends AppCompatActivity {
             userRef.child(String.valueOf(newUser.getId())).setValue(newUser);
             finish();
         } else {
-            // TODO : display error
-        }
-    }
-
-    private void loginUser() {
-        for(User user : userList) {
-            if(user.getEmail().equals(emailInput.getText().toString()) && user.getPassword().equals(encodePassword())) {
-                g.setCurrentUser(user);
-                finish();
+            isInConnection = false;
+            setEnableToAllElements(true);
+            if(!isNicknameValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Le nom d'utilisateur doit contenir au moins 3 charactères" ,Toast.LENGTH_SHORT).show();
+            }
+            if(!isEmailValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Adresse mail invalide" ,Toast.LENGTH_SHORT).show();
+            }
+            if(!isEmailAvailable()){
+                Toast.makeText(LoginRegisterActivity.this, "Adresse mail déjà utilisée" ,Toast.LENGTH_SHORT).show();
+            }
+            if(!isPasswordValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Le mot de passe doit contenir au moins 8 charactères et contenir au moins 1 majuscule 1 minuscule et 1 nombre" ,Toast.LENGTH_LONG).show();
+            }
+            if(!isPasswordConfirmationValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Les mots de passe ne correspondent pas" ,Toast.LENGTH_SHORT).show();
             }
         }
-        // TODO : if access here, display error
+    }
+    private void loginUser() {
+        if(checkUserExist()){
+            isInConnection = true;
+            setEnableToAllElements(false);
+            finish();
+        }else{
+            isInConnection = false;
+            setEnableToAllElements(true);
+            Toast.makeText(LoginRegisterActivity.this, "Votre adresse mail ou votre mot de passe est invalide" ,Toast.LENGTH_LONG).show();
+        }
+    }
+    private boolean checkUserExist(){
+        boolean userExist = false;
+    for(User user : userList) {
+        if(user.getEmail().equals(emailInput.getText().toString()) && user.getPassword().equals(encodePassword())) {
+            g.setCurrentUser(user);
+            userExist = true;
+        }
     }
 
+    return  userExist;
+}
     private boolean isNicknameValid() {
         Pattern pattern = Pattern.compile("[a-zA-Z]{3,}");
         return pattern.matcher(pseudoInput.getText().toString()).matches();
@@ -320,8 +354,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid() {
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
-        return pattern.matcher(passwordInput.getText().toString()).matches() &&
-                passwordInput.getText().toString().equals(passwordConfirmationInput.getText().toString());
+        return pattern.matcher(passwordInput.getText().toString()).matches();
+    }
+
+    private boolean isPasswordConfirmationValid(){
+        return passwordInput.getText().toString().equals(passwordConfirmationInput.getText().toString());
     }
 
     private boolean isEmailValid() {
