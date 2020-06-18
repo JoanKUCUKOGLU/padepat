@@ -38,9 +38,12 @@ public class RecipeActivity extends AppCompatActivity {
     GlobalData g;
 
     private Recipe recipe;
+
     private List<Like> totalLikeList;
     private List<Like> myLikeList;
     private Integer nbLikes = 0;
+
+    private List<Comment> commentList;
 
     private ProgressBar likeProgressBar;
     private Button buttonLike;
@@ -48,6 +51,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference likeRef;
+    private DatabaseReference commentRef;
     private LinearLayout commentsLayout;
     private TextInputEditText addCommentText;
 
@@ -62,6 +66,7 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         g = GlobalData.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("recipe");
@@ -70,6 +75,7 @@ public class RecipeActivity extends AppCompatActivity {
         findViews();
         setPage();
         manageLikesDisplay();
+        manageCommentSection();
 
         NavBarGestion.manage("NONE","NONE",RecipeActivity.this);
     }
@@ -156,7 +162,6 @@ public class RecipeActivity extends AppCompatActivity {
     //Gere l'affichage les likes dans la progress bar et dans les boutons
     private void manageLikesDisplay(){
         // DATABASE
-        database = FirebaseDatabase.getInstance();
         likeRef = database.getReference("/likes");
 
         TextView likeDislikeDisplayNumber = findViewById(R.id.likeNumberDisplay);
@@ -202,6 +207,37 @@ public class RecipeActivity extends AppCompatActivity {
         });
     }
 
+    private void manageCommentSection() {
+        commentRef = database.getReference("/comments");
+
+        // Read updates from the database
+        commentRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                commentList = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Comment comment = data.getValue(Comment.class);
+                    commentList.add(comment);
+                }
+                Log.d("TEST", getString(R.string.value).toString() + nbLikes);
+                for(int i = 1; i < commentsLayout.getChildCount(); i++) {
+                    commentsLayout.removeViewAt(i);
+                }
+                for(Comment comment : commentList) {
+                    if(comment.getRecipeId() == recipe.getId()) {
+                        commentsLayout.addView(generateCommentLayoutChild(comment));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("TEST", getString(R.string.read_failed), error.toException());
+            }
+        });
+    }
+
     //Remplit les linearLayout avec les items de la liste passée en paramètre
     private void putDataInLinearLayout(LinearLayout linearLayout,List<String> stringList){
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -221,16 +257,34 @@ public class RecipeActivity extends AppCompatActivity {
 
     //Ajoute un commentaire
     private void addComment() {
+        if(g.isUserLogged()) {
+            Comment newComment = new Comment(
+                    commentList.size(),
+                    addCommentText.getText().toString(),
+                    recipe.getId(),
+                    g.getCurrentUser().getId());
 
-        hideKeyboard(RecipeActivity.this);
-        commentsLayout.addView(generateCommentLayoutChild());
-        addCommentText.setText(null);
-        addCommentText.clearFocus();
-        addCommentText.setCursorVisible(false);
+            hideKeyboard(RecipeActivity.this);
+            addCommentText.setText(null);
+            addCommentText.clearFocus();
+            addCommentText.setCursorVisible(false);
+
+            commentRef.child(String.valueOf(newComment.getId())).setValue(newComment);
+        } else {
+            // TODO ajouter popup connecte toi tes grands morts
+        }
+    }
+
+    private void editComment(Comment currComment) {
+        commentRef.child(String.valueOf(currComment.getId())).setValue(currComment);
+    }
+
+    private void deleteComment(Comment currComment) {
+        commentRef.child(String.valueOf(currComment.getId())).removeValue();
     }
 
     //Genere la zone ou apparaissent les actions liées au commentaire courant
-    private LinearLayout generateCommentActionLayout() {
+    private LinearLayout generateCommentActionLayout(Comment currComment) {
         LinearLayout.LayoutParams actionLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         actionLayout.setMargins(5,5,20,5);
         LinearLayout actionLinearLayout = new LinearLayout(RecipeActivity.this);
@@ -266,11 +320,10 @@ public class RecipeActivity extends AppCompatActivity {
                         if(event.getAction() == MotionEvent.ACTION_UP) {
                             if(event.getRawX() >= (addCommentText.getRight() - addCommentText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                                 hideKeyboard(RecipeActivity.this);
-                                text.setText(editText.getText().toString());
                                 editText.clearFocus();
                                 editText.setCursorVisible(false);
-                                parentLinearLayout.removeView(editText);
-                                parentLinearLayout.addView(text,1);
+                                currComment.setContent(editText.getText().toString());
+                                editComment(currComment);
                                 return true;
                             }
                         }
@@ -285,8 +338,7 @@ public class RecipeActivity extends AppCompatActivity {
         deleteImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout parentLinearLayout = (LinearLayout) deleteImg.getParent().getParent();
-                commentsLayout.removeView(parentLinearLayout);
+                deleteComment(currComment);
             }
         });
         actionLinearLayout.addView(editImg);
@@ -295,7 +347,7 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     //Genere la zone ou apparait le commentaire courant
-    private LinearLayout generateCommentLayoutChild(){
+    private LinearLayout generateCommentLayoutChild(Comment currComment){
         LinearLayout newLinearLayout = new LinearLayout(RecipeActivity.this);
         newLinearLayout.setOrientation(LinearLayout.VERTICAL);
         int textSize = 18;
@@ -306,20 +358,22 @@ public class RecipeActivity extends AppCompatActivity {
 
         TextView userTextView = new TextView(RecipeActivity.this);
         userTextView.setTextSize(textSize);
-        userTextView.setText("[USER NAME]");
+        userTextView.setText(g.getUserById(currComment.getUserId()).getName());
         userTextView.setTypeface(null,Typeface.BOLD);
         params.setMargins(0, 5,0,5);
         userTextView.setLayoutParams(params);
 
         TextView newTextView = new TextView(RecipeActivity.this);
         newTextView.setTextSize(textSize);
-        newTextView.setText(addCommentText.getText().toString());
+        newTextView.setText(currComment.getContent());
         newTextView.setLayoutParams(params);
 
         newLinearLayout.addView(userTextView);
         newLinearLayout.addView(newTextView);
 
-        newLinearLayout.addView(generateCommentActionLayout());
+        if(g.isUserLogged() && currComment.getUserId() == g.getCurrentUser().getId()) {
+            newLinearLayout.addView(generateCommentActionLayout(currComment));
+        }
 
         View separator = new View(RecipeActivity.this);
         separator.setBackgroundColor(Color.parseColor("#E6D1A1"));

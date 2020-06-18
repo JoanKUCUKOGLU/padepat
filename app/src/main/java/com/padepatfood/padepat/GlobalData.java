@@ -15,6 +15,7 @@ public class GlobalData {
     private List<Recipe> recipeList;
     private List<String> categoryList;
 
+    private List<User> userList;
     private User currentUser;
 
     private GlobalData() {
@@ -52,6 +53,23 @@ public class GlobalData {
 
     public void setCategoryList(List<String> categoryList) {
         this.categoryList = categoryList;
+    }
+
+    public User getUserById(Integer id) {
+        for(User user : userList) {
+            if(user.getId() == id) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
     public Boolean isUserLogged() {

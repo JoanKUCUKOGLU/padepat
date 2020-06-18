@@ -31,6 +31,7 @@ public class StartActivity extends AppCompatActivity {
 
     List<Recipe> recipeList;
     List<String> categoryList;
+    List<User> userList;
     Boolean connected = false;
 
     @Override
@@ -57,10 +58,10 @@ public class StartActivity extends AppCompatActivity {
 
         if (connected) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("/recipes");
 
             // Read from the database
-            myRef.addValueEventListener(new ValueEventListener() {
+            DatabaseReference recipeRef = database.getReference("/recipes");
+            recipeRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     recipeList = new ArrayList<>();
@@ -90,6 +91,27 @@ public class StartActivity extends AppCompatActivity {
                     Log.w("TEST", getString(R.string.read_failed), error.toException());
                 }
             });
+
+            DatabaseReference userRef = database.getReference("/users");
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    userList = new ArrayList<>();
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        User user = data.getValue(User.class);
+                        userList.add(user);
+                    }
+                    g.setUserList(userList);
+                    Log.d("TEST", getString(R.string.value) + recipeList);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("TEST", getString(R.string.read_failed), error.toException());
+                }
+            });
+
             loading();
         } else {
             recipeList = JSONDecoder.getRecipesFromJson(this);

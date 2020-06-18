@@ -16,23 +16,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
@@ -66,8 +60,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference userRef;
 
-    private List<User> userList;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,29 +70,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
         findViews();
         setPage();
-
-        // DATABASE
-        database = FirebaseDatabase.getInstance();
-        userRef = database.getReference("/users");
-
-        TextView likeDislikeDisplayNumber = findViewById(R.id.likeNumberDisplay);
-        // Read updates from the database
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userList = new ArrayList<>();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    User user = data.getValue(User.class);
-                    userList.add(user);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("TEST", getString(R.string.read_failed), error.toException());
-            }
-        });
     }
 
     //Regroupe tous les findViewById
@@ -307,7 +276,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
             String hashed = encodePassword();
 
             User newUser = new User(
-                    userList.size(),
+                    g.getUserList().size(),
                     pseudoInput.getText().toString(),
                     emailInput.getText().toString(),
                     hashed,
@@ -322,7 +291,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
-        for(User user : userList) {
+        for(User user : g.getUserList()) {
             if(user.getEmail().equals(emailInput.getText().toString()) && user.getPassword().equals(encodePassword())) {
                 g.setCurrentUser(user);
                 finish();
@@ -348,7 +317,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     private boolean isEmailAvailable() {
-        for(User user : userList) {
+        for(User user : g.getUserList()) {
             if(user.getEmail().equals(emailInput.getText().toString())) {
                 return false;
             }
