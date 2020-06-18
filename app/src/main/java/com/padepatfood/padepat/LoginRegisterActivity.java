@@ -131,18 +131,18 @@ public class LoginRegisterActivity extends AppCompatActivity {
         params.setMargins(100,0,100,10);
 
         pseudoInput = new EditText(LoginRegisterActivity.this);
-        setEditTextParams(pseudoInput,"Pseudonyme",params, R.drawable.ic_baseline_face_24);
+        setEditTextParams(pseudoInput,getString(R.string.nickname),params, R.drawable.ic_baseline_face_24);
 
         emailInput = new EditText(LoginRegisterActivity.this);
-        setEditTextParams(emailInput,"Email",params, R.drawable.ic_baseline_alternate_email_24);
+        setEditTextParams(emailInput,getString(R.string.email),params, R.drawable.ic_baseline_alternate_email_24);
 
         passwordInput = new EditText(LoginRegisterActivity.this);
         passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        setEditTextParams(passwordInput,"Mot de passe",params, R.drawable.ic_baseline_lock_24);
+        setEditTextParams(passwordInput,getString(R.string.password),params, R.drawable.ic_baseline_lock_24);
 
         passwordConfirmationInput = new EditText(LoginRegisterActivity.this);
         passwordConfirmationInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        setEditTextParams(passwordConfirmationInput,"Confirmation mot de passe",params, R.drawable.ic_baseline_lock_24);
+        setEditTextParams(passwordConfirmationInput,getString(R.string.password_confirmation),params, R.drawable.ic_baseline_lock_24);
 
         saveButton = new Button(LoginRegisterActivity.this);
         saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FCE68B")));
@@ -183,8 +183,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
         passwordInput.setText(null);
         loginRegisterLinearLayout.addView(passwordInput);
         loginRegisterLinearLayout.addView(passwordConfirmationInput);
-        saveButton.setText("S'enregister");
-        goBackButton.setText("J'ai déjà un compte");
+        saveButton.setText(getString(R.string.sign_up));
+        goBackButton.setText(getString(R.string.account_already_exists));
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,8 +206,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
         loginRegisterLinearLayout.addView(emailInput);
         loginRegisterLinearLayout.addView(passwordInput);
 
-        saveButton.setText("Se connecter");
-        goBackButton.setText("Je n'ai pas de compte");
+        saveButton.setText(getString(R.string.sign_in));
+        goBackButton.setText(getString(R.string.account_doesnt_exists));
         goBackButton.setVisibility(View.VISIBLE);
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,19 +302,19 @@ public class LoginRegisterActivity extends AppCompatActivity {
             isInConnection = false;
             setEnableToAllElements(true);
             if(!isNicknameValid()){
-                Toast.makeText(LoginRegisterActivity.this, "Le nom d'utilisateur doit contenir au moins 3 charactères" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginRegisterActivity.this, getString(R.string.three_caracters_needed) ,Toast.LENGTH_SHORT).show();
             }
             if(!isEmailValid()){
-                Toast.makeText(LoginRegisterActivity.this, "Adresse mail invalide" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginRegisterActivity.this, getString(R.string.invalid_email) ,Toast.LENGTH_SHORT).show();
             }
             if(!isEmailAvailable()){
-                Toast.makeText(LoginRegisterActivity.this, "Adresse mail déjà utilisée" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginRegisterActivity.this, getString(R.string.email_already_used) ,Toast.LENGTH_SHORT).show();
             }
             if(!isPasswordValid()){
-                Toast.makeText(LoginRegisterActivity.this, "Le mot de passe doit contenir au moins 8 charactères et contenir au moins 1 majuscule 1 minuscule et 1 nombre" ,Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginRegisterActivity.this, getString(R.string.invalid_password) ,Toast.LENGTH_LONG).show();
             }
             if(!isPasswordConfirmationValid()){
-                Toast.makeText(LoginRegisterActivity.this, "Les mots de passe ne correspondent pas" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginRegisterActivity.this, getString(R.string.passwords_dont_match) ,Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -326,7 +326,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         }else{
             isInConnection = false;
             setEnableToAllElements(true);
-            Toast.makeText(LoginRegisterActivity.this, "Votre adresse mail ou votre mot de passe est invalide" ,Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginRegisterActivity.this, getString(R.string.password_email_invalid) ,Toast.LENGTH_LONG).show();
         }
     }
     private boolean checkUserExist(){

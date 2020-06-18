@@ -5,7 +5,7 @@
     <string name="password">Password</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must contain at least 8 caracters, and must contain 1 capital letter, 1 lowercase letter and 1 number</string>
     <string name="login_failed">"Login failed"</string>
     <string name="recipe_picture">Recipe\'s picture</string>
     <string name="padepat_logo">Padepat\'s logo</string>
@@ -16,4 +16,14 @@
     <string name="comment_edit">Edit your comment</string>
     <string name="internet_needed">This app needs an Internet connection</string>
     <string name="add_comment">Add a comment...</string>
+    <string name="nickname">Nickname</string>
+    <string name="password_confirmation">Password\'s confirmation</string>
+    <string name="sign_up">Sign up</string>
+    <string name="account_already_exists">Already have an account</string>
+    <string name="account_doesnt_exists">Don\'t have an account</string>
+    <string name="three_caracters_needed">User name must contain at least 3 caracters</string>
+    <string name="invalid_email">Email invalid</string>
+    <string name="email_already_used">Email already used</string>
+    <string name="passwords_dont_match">Passwords don\'t match</string>
+    <string name="password_email_invalid">Email or password is invalid</string>
 </resources>
