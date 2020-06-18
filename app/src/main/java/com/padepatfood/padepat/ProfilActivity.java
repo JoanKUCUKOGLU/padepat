@@ -167,21 +167,4 @@ public class ProfilActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
-
-    //Gestion de la navBar
-    public void navBarGestion() {
-        navBar = findViewById(R.id.navBarLayout);
-        ImageView favButton = (ImageView) navBar.getChildAt(1);
-        ImageView homeButton = (ImageView) navBar.getChildAt(0);
-        boolean isConnected = true;
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            Intent newActivity;
-
-            @Override
-            public void onClick(View v) {
-                newActivity = new Intent(ProfilActivity.this, MainActivity.class);
-                startActivity(newActivity);
-            }
-        });
-    }
 }

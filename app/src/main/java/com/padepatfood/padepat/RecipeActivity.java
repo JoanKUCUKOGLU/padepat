@@ -71,7 +71,7 @@ public class RecipeActivity extends AppCompatActivity {
         setPage();
         manageLikesDisplay();
 
-        NavBarGestion.manage("NONE","NONE",RecipeActivity.this);
+        //NavBarGestion.manage("NONE","NONE",RecipeActivity.this);
     }
 
     //Crée la transition pour l'activity
