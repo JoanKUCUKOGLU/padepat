@@ -1,5 +1,6 @@
 package com.padepatfood.padepat;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -11,6 +12,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +57,7 @@ public class RecipeActivity extends AppCompatActivity {
     private DatabaseReference commentRef;
     private LinearLayout commentsLayout;
     private TextInputEditText addCommentText;
-
+    private TextInputLayout addCommentLayout;
     private LinearLayout navBar;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -98,6 +101,7 @@ public class RecipeActivity extends AppCompatActivity {
         buttonDislike = findViewById(R.id.buttonDislike);
         commentsLayout = findViewById(R.id.commentLayout);
         addCommentText = findViewById(R.id.addCommentTextView);
+        addCommentLayout = findViewById(R.id.addCommentLayout);
     }
 
     //Remplis les view avec les datas correspondantes
@@ -219,10 +223,8 @@ public class RecipeActivity extends AppCompatActivity {
                     Comment comment = data.getValue(Comment.class);
                     commentList.add(comment);
                 }
-                Log.d("TEST", getString(R.string.value).toString() + nbLikes);
-                for(int i = 1; i < commentsLayout.getChildCount(); i++) {
-                    commentsLayout.removeViewAt(i);
-                }
+                commentsLayout.removeAllViews();
+                commentsLayout.addView(addCommentLayout);
                 for(Comment comment : commentList) {
                     if(comment.getRecipeId() == recipe.getId()) {
                         commentsLayout.addView(generateCommentLayoutChild(comment));
@@ -258,20 +260,25 @@ public class RecipeActivity extends AppCompatActivity {
     //Ajoute un commentaire
     private void addComment() {
         if(g.isUserLogged()) {
-            Comment newComment = new Comment(
-                    commentList.get(commentList.size() -1).getId() + 1,
-                    addCommentText.getText().toString(),
-                    recipe.getId(),
-                    g.getCurrentUser().getId());
+            if(addCommentText.getText() != null){
+                if(!addCommentText.getText().toString().isEmpty()){
 
-            hideKeyboard(RecipeActivity.this);
-            addCommentText.setText(null);
-            addCommentText.clearFocus();
-            addCommentText.setCursorVisible(false);
+                    Comment newComment = new Comment(
+                            commentList.get(commentList.size() -1).getId() + 1,
+                            addCommentText.getText().toString(),
+                            recipe.getId(),
+                            g.getCurrentUser().getId());
 
-            commentRef.child(String.valueOf(newComment.getId())).setValue(newComment);
+                    hideKeyboard(RecipeActivity.this);
+                    addCommentText.setText(null);
+                    addCommentText.clearFocus();
+                    addCommentText.setCursorVisible(false);
+
+                    commentRef.child(String.valueOf(newComment.getId())).setValue(newComment);
+                }
+            }
         } else {
-            // TODO ajouter popup connecte toi tes grands morts
+            showErrorPage();
         }
     }
 
@@ -403,7 +410,7 @@ public class RecipeActivity extends AppCompatActivity {
             }
             likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
         } else {
-            // TODO : Ajouter popup pour demander à l'utilisateur s'il veut se connecter pour liker et renvoyer sur LoginRegisterActivity
+            showErrorPage();
         }
     }
 
@@ -444,6 +451,38 @@ public class RecipeActivity extends AppCompatActivity {
         LikeType(String type) {
             this.stringType = type;
         }
+    }
+
+    private void showErrorPage(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(RecipeActivity.this);
+        alert.setTitle("Error");
+
+        LinearLayout layout = new LinearLayout(RecipeActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setGravity(Gravity.CENTER);
+
+        alert.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
+        alert.setIcon(android.R.drawable.ic_dialog_alert);
+        TextView text = new TextView(RecipeActivity.this);
+        text.setText("Tu ne peux pas ajouter de commentaires ou liker si tu n'est pas connecté :(");
+        text.setGravity(Gravity.CENTER);
+
+        Button connectionButton = new Button(RecipeActivity.this);
+        connectionButton.setText("Connection");
+        connectionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.button)));
+        connectionButton.setGravity(Gravity.CENTER);
+
+        connectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecipeActivity.this,LoginRegisterActivity.class));
+            }
+        });
+        layout.addView(text);
+        layout.addView(connectionButton);
+
+        alert.setView(layout);
+        alert.show();
     }
 }
 
