@@ -3,16 +3,16 @@ package com.padepatfood.padepat;
 public class Like {
 
     private Integer likeid;
-    private String deviceid;
+    private Integer userid;
     private Integer recipeid;
     private String type;
 
     public Like() {
     }
 
-    public Like(Integer likeid, String deviceid, Integer recipeid, String type) {
+    public Like(Integer likeid, Integer userid, Integer recipeid, String type) {
         this.likeid = likeid;
-        this.deviceid = deviceid;
+        this.userid = userid;
         this.recipeid = recipeid;
         this.type = type;
     }
@@ -21,8 +21,8 @@ public class Like {
         return likeid;
     }
 
-    public String getDeviceid() {
-        return deviceid;
+    public Integer getUserid() {
+        return userid;
     }
 
     public Integer getRecipeid() {

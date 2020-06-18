@@ -47,11 +47,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     private LinearLayout loginRegisterLinearLayout;
 
-    boolean isStartPage = true;
-    boolean isInConnection = false;
+    private boolean isStartPage = true;
+    private boolean isInConnection = false;
     private ProgressBar loadingItem;
 
-    private Boolean isRegister;
+    private boolean isRegister;
 
     private Button registerButton;
     private Button loginButton;

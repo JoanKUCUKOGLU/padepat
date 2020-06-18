@@ -36,12 +36,12 @@ import java.util.stream.Collectors;
 
 public class RecipeActivity extends AppCompatActivity {
 
+    GlobalData g;
+
     private Recipe recipe;
     private List<Like> totalLikeList;
     private List<Like> myLikeList;
     private Integer nbLikes = 0;
-
-    private String currentDeviceId;
 
     private ProgressBar likeProgressBar;
     private Button buttonLike;
@@ -59,10 +59,13 @@ public class RecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
         getSupportActionBar().hide();
+
+        g = GlobalData.getInstance();
+
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("recipe");
-        currentDeviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         setTransition();
         findViews();
@@ -335,16 +338,20 @@ public class RecipeActivity extends AppCompatActivity {
 
     //Gere la mise a jour des likes
     private void updateLike(LikeType type) {
-        Like currentLike = new Like();
-        // New line in DB
-        if(myLikeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).count() == 0) {
-            currentLike = new Like(totalLikeList.size() > 0 ? totalLikeList.get(totalLikeList.size()-1).getLikeid() + 1 : 0,
-                    currentDeviceId, recipe.getId(), type.stringType);
-        } else { // Update existing line
-            currentLike = myLikeList.stream().filter(like -> like.getDeviceid().equals(currentDeviceId)).collect(Collectors.toList()).get(0);
-            currentLike.setType(currentLike.getType().equals(type.stringType) ? LikeType.None.stringType : type.stringType);
+        Like currentLike;
+        if(g.isUserLogged()) {
+            // New line in DB
+            if(myLikeList.stream().filter(like -> like.getUserid().equals(g.getCurrentUser().getId())).count() == 0) {
+                currentLike = new Like(totalLikeList.size() > 0 ? totalLikeList.get(totalLikeList.size()-1).getLikeid() + 1 : 0,
+                        g.getCurrentUser().getId(), recipe.getId(), type.stringType);
+            } else { // Update existing line
+                currentLike = myLikeList.stream().filter(like -> like.getUserid().equals(g.getCurrentUser().getId())).collect(Collectors.toList()).get(0);
+                currentLike.setType(currentLike.getType().equals(type.stringType) ? LikeType.None.stringType : type.stringType);
+            }
+            likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
+        } else {
+            // TODO : Ajouter popup pour demander à l'utilisateur s'il veut se connecter pour liker et renvoyer sur LoginRegisterActivity
         }
-        likeRef.child(String.valueOf(currentLike.getLikeid())).setValue(currentLike);
     }
 
     //Permet de forcer la fermeture du clavier
