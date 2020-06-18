@@ -139,37 +139,21 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(100,0,100,10);
+
         pseudoInput = new EditText(LoginRegisterActivity.this);
         setEditTextParams(pseudoInput,"Pseudonyme",params, R.drawable.ic_baseline_face_24);
 
-        loginRegisterLinearLayout = findViewById(R.id.loginRegisterLinearLayout);
-        pseudoInput = new EditText(LoginRegisterActivity.this);
-        pseudoInput.setEms(10);
-        pseudoInput.setLayoutParams(params);
-        pseudoInput.setHint("Pseudonyme");
+
         emailInput = new EditText(LoginRegisterActivity.this);
         setEditTextParams(emailInput,"Email",params, R.drawable.ic_baseline_alternate_email_24);
 
-        emailInput = new EditText(LoginRegisterActivity.this);
-        emailInput.setHint("Email");
-        emailInput.setEms(10);
-        emailInput.setLayoutParams(params);
         passwordInput = new EditText(LoginRegisterActivity.this);
         passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
         setEditTextParams(passwordInput,"Mot de passe",params, R.drawable.ic_baseline_lock_24);
 
-        passwordInput = new EditText(LoginRegisterActivity.this);
-        passwordInput.setHint("Mot de passe");
-        passwordInput.setEms(10);
-        passwordInput.setLayoutParams(params);
         passwordConfirmationInput = new EditText(LoginRegisterActivity.this);
         passwordConfirmationInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
         setEditTextParams(passwordConfirmationInput,"Confirmation mot de passe",params, R.drawable.ic_baseline_lock_24);
-
-        passwordConfirmationInput = new EditText(LoginRegisterActivity.this);
-        passwordConfirmationInput.setHint("Confirmation mot de passe");
-        passwordConfirmationInput.setEms(10);
-        passwordConfirmationInput.setLayoutParams(params);
 
         saveButton = new Button(LoginRegisterActivity.this);
         saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FCE68B")));
@@ -257,7 +241,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
 
     // --- FONCTIONS OUTILS ---- //
-
     //Fonction créée pour éviter la redondance de code - Applique les parametres layout, ainsi que le hint
     private void setEditTextParams(EditText editText,String hintText, LinearLayout.LayoutParams params,int drawable){
         editText.setBackgroundResource(R.drawable.field_rounded_corner_bottom_border);
@@ -301,7 +284,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     // MANAGE USER SECTION -------------------
-
     private void registerUser() {
         if(isNicknameValid() && isEmailValid() && isEmailAvailable() && isPasswordValid()) {
             String hashed = encodePassword();
