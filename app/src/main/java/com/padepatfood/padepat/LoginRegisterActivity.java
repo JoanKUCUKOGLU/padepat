@@ -12,11 +12,14 @@ import android.text.InputFilter;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -60,6 +63,12 @@ public class LoginRegisterActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference userRef;
 
+    private List<User> userList;
+
+    private Animation popAnimation;
+    private Animation fadeinAnimation;
+    private Animation fadeoutAnimation;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +79,34 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
         findViews();
         setPage();
+
+        // DATABASE
+        database = FirebaseDatabase.getInstance();
+        userRef = database.getReference("/users");
+
+        TextView likeDislikeDisplayNumber = findViewById(R.id.likeNumberDisplay);
+        // Read updates from the database
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userList = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    User user = data.getValue(User.class);
+                    userList.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("TEST", getString(R.string.read_failed), error.toException());
+            }
+        });
+
+        popAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.animationpop);
+        fadeinAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.fadein);
+        fadeoutAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.fadeout);
+
     }
 
     //Regroupe tous les findViewById
@@ -108,37 +145,20 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(100,0,100,10);
+
         pseudoInput = new EditText(LoginRegisterActivity.this);
         setEditTextParams(pseudoInput,"Pseudonyme",params, R.drawable.ic_baseline_face_24);
 
-        loginRegisterLinearLayout = findViewById(R.id.loginRegisterLinearLayout);
-        pseudoInput = new EditText(LoginRegisterActivity.this);
-        pseudoInput.setEms(10);
-        pseudoInput.setLayoutParams(params);
-        pseudoInput.setHint("Pseudonyme");
         emailInput = new EditText(LoginRegisterActivity.this);
         setEditTextParams(emailInput,"Email",params, R.drawable.ic_baseline_alternate_email_24);
 
-        emailInput = new EditText(LoginRegisterActivity.this);
-        emailInput.setHint("Email");
-        emailInput.setEms(10);
-        emailInput.setLayoutParams(params);
         passwordInput = new EditText(LoginRegisterActivity.this);
         passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
         setEditTextParams(passwordInput,"Mot de passe",params, R.drawable.ic_baseline_lock_24);
 
-        passwordInput = new EditText(LoginRegisterActivity.this);
-        passwordInput.setHint("Mot de passe");
-        passwordInput.setEms(10);
-        passwordInput.setLayoutParams(params);
         passwordConfirmationInput = new EditText(LoginRegisterActivity.this);
         passwordConfirmationInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
         setEditTextParams(passwordConfirmationInput,"Confirmation mot de passe",params, R.drawable.ic_baseline_lock_24);
-
-        passwordConfirmationInput = new EditText(LoginRegisterActivity.this);
-        passwordConfirmationInput.setHint("Confirmation mot de passe");
-        passwordConfirmationInput.setEms(10);
-        passwordConfirmationInput.setLayoutParams(params);
 
         saveButton = new Button(LoginRegisterActivity.this);
         saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FCE68B")));
@@ -149,17 +169,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isInConnection = true;
-
-                for(int i=0; i< loginRegisterLinearLayout.getChildCount();i++){
-                    loginRegisterLinearLayout.getChildAt(i).setEnabled(false);
-                }
-                loadingItem.setVisibility(View.VISIBLE);
-                goBackButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
-                goBackButton.setEnabled(false);
-                saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
-                saveButton.setEnabled(false);
-
                 if(isRegister) {
                     registerUser();
                 } else {
@@ -195,11 +204,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginRegisterLinearLayout.startAnimation(fadeoutAnimation);
                 setLoginPage();
             }
         });
         goBackButton.setVisibility(View.VISIBLE);
         loginRegisterLinearLayout.addView(saveButton);
+        loginRegisterLinearLayout.startAnimation(fadeinAnimation);
         isStartPage = false;
     }
 
@@ -217,16 +228,17 @@ public class LoginRegisterActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginRegisterLinearLayout.startAnimation(fadeoutAnimation);
                 setRegisterPage();
             }
         });
         loginRegisterLinearLayout.addView(saveButton);
+        loginRegisterLinearLayout.startAnimation(fadeinAnimation);
         isStartPage = false;
     }
 
 
     // --- FONCTIONS OUTILS ---- //
-
     //Fonction créée pour éviter la redondance de code - Applique les parametres layout, ainsi que le hint
     private void setEditTextParams(EditText editText,String hintText, LinearLayout.LayoutParams params,int drawable){
         editText.setBackgroundResource(R.drawable.field_rounded_corner_bottom_border);
@@ -237,6 +249,23 @@ public class LoginRegisterActivity extends AppCompatActivity {
         editText.setFilters( new InputFilter[]{new InputFilter.LengthFilter(50)});
         editText.setCompoundDrawablesWithIntrinsicBounds(drawable, 0,0 , 0);
         editText.setCompoundDrawablePadding(50);
+    }
+
+    private void setEnableToAllElements(boolean toggle){
+        for(int i=0; i< loginRegisterLinearLayout.getChildCount();i++){
+            loginRegisterLinearLayout.getChildAt(i).setEnabled(toggle);
+        }
+        goBackButton.setEnabled(toggle);
+        saveButton.setEnabled(toggle);
+        if(!toggle){
+            loadingItem.setVisibility(View.VISIBLE);
+            goBackButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
+            saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
+        }else{
+            loadingItem.setVisibility(View.INVISIBLE);
+            goBackButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.button)));
+            saveButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.button)));
+        }
     }
 
     @Override
@@ -270,11 +299,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     // MANAGE USER SECTION -------------------
-
     private void registerUser() {
-        if(isNicknameValid() && isEmailValid() && isEmailAvailable() && isPasswordValid()) {
+        if(isNicknameValid() && isEmailValid() && isEmailAvailable() && isPasswordValid() && isPasswordConfirmationValid()) {
+            isInConnection = true;
+            setEnableToAllElements(false);
             String hashed = encodePassword();
-
             User newUser = new User(
                     g.getUserList().size(),
                     pseudoInput.getText().toString(),
@@ -286,20 +315,47 @@ public class LoginRegisterActivity extends AppCompatActivity {
             userRef.child(String.valueOf(newUser.getId())).setValue(newUser);
             finish();
         } else {
-            // TODO : display error
-        }
-    }
-
-    private void loginUser() {
-        for(User user : g.getUserList()) {
-            if(user.getEmail().equals(emailInput.getText().toString()) && user.getPassword().equals(encodePassword())) {
-                g.setCurrentUser(user);
-                finish();
+            isInConnection = false;
+            setEnableToAllElements(true);
+            if(!isNicknameValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Le nom d'utilisateur doit contenir au moins 3 charactères" ,Toast.LENGTH_SHORT).show();
+            }
+            if(!isEmailValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Adresse mail invalide" ,Toast.LENGTH_SHORT).show();
+            }
+            if(!isEmailAvailable()){
+                Toast.makeText(LoginRegisterActivity.this, "Adresse mail déjà utilisée" ,Toast.LENGTH_SHORT).show();
+            }
+            if(!isPasswordValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Le mot de passe doit contenir au moins 8 charactères et contenir au moins 1 majuscule 1 minuscule et 1 nombre" ,Toast.LENGTH_LONG).show();
+            }
+            if(!isPasswordConfirmationValid()){
+                Toast.makeText(LoginRegisterActivity.this, "Les mots de passe ne correspondent pas" ,Toast.LENGTH_SHORT).show();
             }
         }
-        // TODO : if access here, display error
+    }
+    private void loginUser() {
+        if(checkUserExist()){
+            isInConnection = true;
+            setEnableToAllElements(false);
+            finish();
+        }else{
+            isInConnection = false;
+            setEnableToAllElements(true);
+            Toast.makeText(LoginRegisterActivity.this, "Votre adresse mail ou votre mot de passe est invalide" ,Toast.LENGTH_LONG).show();
+        }
+    }
+    private boolean checkUserExist(){
+        boolean userExist = false;
+    for(User user : userList) {
+        if(user.getEmail().equals(emailInput.getText().toString()) && user.getPassword().equals(encodePassword())) {
+            g.setCurrentUser(user);
+            userExist = true;
+        }
     }
 
+    return  userExist;
+}
     private boolean isNicknameValid() {
         Pattern pattern = Pattern.compile("[a-zA-Z]{3,}");
         return pattern.matcher(pseudoInput.getText().toString()).matches();
@@ -307,8 +363,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid() {
         Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
-        return pattern.matcher(passwordInput.getText().toString()).matches() &&
-                passwordInput.getText().toString().equals(passwordConfirmationInput.getText().toString());
+        return pattern.matcher(passwordInput.getText().toString()).matches();
+    }
+
+    private boolean isPasswordConfirmationValid(){
+        return passwordInput.getText().toString().equals(passwordConfirmationInput.getText().toString());
     }
 
     private boolean isEmailValid() {

@@ -2,6 +2,7 @@ package com.padepatfood.padepat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +25,7 @@ public class ProfilActivity extends AppCompatActivity {
     private ImageView img;
     private EditText userNameEdit;
 
-    private CardView editPhotoCardView;
+    private Button cancelEditButton;
     private LinearLayout dietaryPrefsLayout;
     private LinearLayout emailLayout;
     private LinearLayout oldPwdLayout;
@@ -44,38 +45,38 @@ public class ProfilActivity extends AppCompatActivity {
 
         Intent srcIntent = getIntent();
         String flagActivity = "NONE";
-        if(srcIntent.hasExtra("flagActivity")){
+        if (srcIntent.hasExtra("flagActivity")) {
             flagActivity = srcIntent.getStringExtra("flagActivity");
         }
 
         globalData = GlobalData.getInstance();
         currentUser = globalData.getCurrentUser();
 
-        initData();
+        findViews();
         setPage();
-        NavBarGestion.manage("PROFILE",flagActivity,ProfilActivity.this);
+        NavBarGestion.manage("PROFILE", flagActivity, ProfilActivity.this);
     }
 
     //Cherche tous les elements avec findViewById pour les attribuer
-    public void initData(){
+    public void findViews() {
         userName = findViewById(R.id.profilUserNameTextView);
         userNameEdit = findViewById(R.id.editUserName);
         img = findViewById(R.id.profilImageView);
         dietaryPrefsText = findViewById(R.id.dietaryPrefsText);
         emailText = findViewById(R.id.emailText);
-        editPhotoCardView = findViewById(R.id.editPhotoCardView);
+        cancelEditButton = findViewById(R.id.cancelButton);
 
         informationsLayout = findViewById(R.id.informationsLayout);
         dietaryPrefsLayout = findViewById(R.id.dietaryPrefLayout);
         emailLayout = findViewById(R.id.emailLayout);
-        oldPwdLayout= findViewById(R.id.oldPwdLayout);
-        newPwdLayout= findViewById(R.id.newPwdLayout);
-        confirmNewPwdLayout= findViewById(R.id.confirmNewPwdLayout);
+        oldPwdLayout = findViewById(R.id.oldPwdLayout);
+        newPwdLayout = findViewById(R.id.newPwdLayout);
+        confirmNewPwdLayout = findViewById(R.id.confirmNewPwdLayout);
         editSaveButton = findViewById(R.id.EditSavebutton);
     }
 
     //Affiche les éléments par rapport aux datas
-    public  void setPage(){
+    public void setPage() {
         Picasso.get().load(currentUser.getImgLink()).fit().centerCrop().error(R.drawable.logopadepat).into(img);
         Picasso.get().setLoggingEnabled(true);
         String prefAlimentaireText = currentUser.getDietaryPrefs();
@@ -83,8 +84,15 @@ public class ProfilActivity extends AppCompatActivity {
         userName.setText(currentUser.getName());
         emailText.setText(currentUser.getEmail());
 
+        EditText oldPwdInput = (EditText) oldPwdLayout.getChildAt(1);
+        oldPwdInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        EditText newPwdInput = (EditText) newPwdLayout.getChildAt(1);
+        newPwdInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        EditText newPwdInputConf = (EditText) confirmNewPwdLayout.getChildAt(1);
+        newPwdInputConf.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
         userNameEdit.setVisibility(View.INVISIBLE);
-        editPhotoCardView.setVisibility(View.INVISIBLE);
+        cancelEditButton.setVisibility(View.INVISIBLE);
         informationsLayout.removeView(oldPwdLayout);
         informationsLayout.removeView(newPwdLayout);
         informationsLayout.removeView(confirmNewPwdLayout);
@@ -93,29 +101,38 @@ public class ProfilActivity extends AppCompatActivity {
         editSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isEditMode){
+                if (isEditMode) {
                     saveChanges();
-                }else{
+                } else {
                     setEditMode();
                 }
+            }
+        });
+
+        cancelEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reload();
             }
         });
     }
 
     //Passe en mode edition
-    public void setEditMode(){
+    public void setEditMode() {
         userName.setVisibility(View.INVISIBLE);
 
         userNameEdit.setText(userName.getText());
         userNameEdit.setVisibility(View.VISIBLE);
 
-        editPhotoCardView.setVisibility(View.VISIBLE);
+        cancelEditButton.setVisibility(View.VISIBLE);
         EditText newDietaryPrefText = new EditText(ProfilActivity.this);
         newDietaryPrefText.setLayoutParams(dietaryPrefsText.getLayoutParams());
         newDietaryPrefText.setText(dietaryPrefsText.getText());
 
         EditText newEmailText = new EditText(ProfilActivity.this);
         newEmailText.setLayoutParams(emailText.getLayoutParams());
+        newEmailText.setLines(1);
+        newEmailText.setHorizontallyScrolling(true);
         newEmailText.setText(emailText.getText());
 
         dietaryPrefsLayout.removeViewAt(1);
@@ -130,8 +147,8 @@ public class ProfilActivity extends AppCompatActivity {
         isEditMode = true;
     }
 
-    //Sauvegarde les changements
-    public void saveChanges(){
+    // Sauvegarde les changements
+    public void saveChanges() {
         EditText dietaryPrefInput = (EditText) dietaryPrefsLayout.getChildAt(1);
         EditText emailInput = (EditText) emailLayout.getChildAt(1);
 
@@ -149,21 +166,5 @@ public class ProfilActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
-    }
-
-    //Gestion de la navBar
-    public void navBarGestion(){
-        navBar = findViewById(R.id.navBarLayout);
-        ImageView favButton = (ImageView)navBar.getChildAt(1);
-        ImageView homeButton = (ImageView)navBar.getChildAt(0);
-        boolean isConnected= true;
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            Intent newActivity;
-            @Override
-            public void onClick(View v) {
-                newActivity = new Intent(ProfilActivity.this, MainActivity.class);
-                startActivity(newActivity);
-            }
-        });
     }
 }
