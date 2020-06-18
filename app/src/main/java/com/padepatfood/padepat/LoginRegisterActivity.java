@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +32,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
     EditText passwordConfirmationInput;
     Button saveButton;
     boolean isStartPage = true;
+    boolean isInConnection = false;
+    ProgressBar loadingItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,11 +51,12 @@ public class LoginRegisterActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         loginRegisterLinearLayout = findViewById(R.id.loginRegisterLinearLayout);
         goBackButton = findViewById(R.id.goBack);
+        loadingItem = findViewById(R.id.loadingConnection);
     }
 
     //Remplis les view avec les datas correspondantes
     private void setPage(){
-
+        loadingItem.setVisibility(View.INVISIBLE);
         goBackButton.setVisibility(View.INVISIBLE);
         generateItems();
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +101,21 @@ public class LoginRegisterActivity extends AppCompatActivity {
         params.topMargin = 20;
         params.bottomMargin = 0;
         saveButton.setLayoutParams(params);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isInConnection = true;
+                for(int i=0; i< loginRegisterLinearLayout.getChildCount();i++){
+                    loginRegisterLinearLayout.getChildAt(i).setEnabled(false);
+                }
+                loadingItem.setVisibility(View.VISIBLE);
+                goBackButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
+                goBackButton.setEnabled(false);
+                saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E6C373")));
+                saveButton.setEnabled(false);
+            }
+        });
     }
 
     //Affiche les éléments liés au login
@@ -168,11 +187,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //Ferme l'activity ou affiche à nouveau les boutons de choix "Se connecter" et "S'enregistrer"
-        if(isStartPage){
-            super.onBackPressed();
-        }else{
-            setStartPage();
+        if(!isInConnection){
+            //Ferme l'activity ou affiche à nouveau les boutons de choix "Se connecter" et "S'enregistrer"
+            if(isStartPage){
+                super.onBackPressed();
+            }else{
+                setStartPage();
+            }
         }
     }
     @Override
