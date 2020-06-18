@@ -259,7 +259,7 @@ public class RecipeActivity extends AppCompatActivity {
     private void addComment() {
         if(g.isUserLogged()) {
             Comment newComment = new Comment(
-                    commentList.size(),
+                    commentList.get(commentList.size() -1).getId() + 1,
                     addCommentText.getText().toString(),
                     recipe.getId(),
                     g.getCurrentUser().getId());
