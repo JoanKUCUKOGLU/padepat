@@ -19,17 +19,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
@@ -63,7 +68,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference userRef;
 
-    private List<User> userList;
 
     private Animation popAnimation;
     private Animation fadeinAnimation;
@@ -77,31 +81,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
         g = GlobalData.getInstance();
 
-        findViews();
-        setPage();
-
-        // DATABASE
         database = FirebaseDatabase.getInstance();
         userRef = database.getReference("/users");
 
-        TextView likeDislikeDisplayNumber = findViewById(R.id.likeNumberDisplay);
-        // Read updates from the database
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userList = new ArrayList<>();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    User user = data.getValue(User.class);
-                    userList.add(user);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("TEST", getString(R.string.read_failed), error.toException());
-            }
-        });
+        findViews();
+        setPage();
 
         popAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.animationpop);
         fadeinAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.fadein);
@@ -347,7 +331,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
     private boolean checkUserExist(){
         boolean userExist = false;
-    for(User user : userList) {
+        for(User user : g.getUserList()) {
         if(user.getEmail().equals(emailInput.getText().toString()) && user.getPassword().equals(encodePassword())) {
             g.setCurrentUser(user);
             userExist = true;
