@@ -4,7 +4,7 @@
     <string name="password">Mot de passe</string>
     <string name="welcome">Bienvenue</string>
     <string name="invalid_username">Pseudo invalide</string>
-    <string name="invalid_password">Votre mot de passe doit contenir >5 caractères</string>
+    <string name="invalid_password">Votre mot de passe doit contenir au moins 8 caractères, et au moins 1 majuscule, 1 minuscule et 1 chiffre</string>
     <string name="login_failed">Connection échouée</string>
     <string name="recipe_picture">Image de la recette</string>
     <string name="padepat_logo">Logo de Padépat</string>
@@ -13,4 +13,14 @@
     <string name="comment_edit">Editez votre commentaire</string>
     <string name="internet_needed">Cette application nécessite une connexion internet</string>
     <string name="add_comment">Ajouter un commentaire...</string>
+    <string name="nickname">Pseudonyme</string>
+    <string name="password_confirmation">Confirmation mot de passe</string>
+    <string name="sign_up">S\'enregistrer</string>
+    <string name="account_already_exists">J\'ai déjà un compte</string>
+    <string name="account_doesnt_exists">Je n\'ai pas de compte</string>
+    <string name="three_caracters_needed">Le nom d\'utilisateur doit contenir au moins 3 caractères</string>
+    <string name="invalid_email">Adresse mail non valide</string>
+    <string name="email_already_used">Adresse mail déjà utilisée</string>
+    <string name="passwords_dont_match">Les mot de passe ne correspondent pas</string>
+    <string name="password_email_invalid">Adresse mail ou mot de passe invalide</string>
 </resources>
