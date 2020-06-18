@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -72,24 +73,23 @@ public class LoginRegisterActivity extends AppCompatActivity {
     //Créé des EditText ainsi qu'un bouton
     private void generateItems(){
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        params.bottomMargin = 10;
-
+        params.setMargins(100,0,100,10);
         pseudoInput = new EditText(LoginRegisterActivity.this);
-        setEditTextParams(pseudoInput,"Pseudonyme",params);
+        setEditTextParams(pseudoInput,"Pseudonyme",params, R.drawable.ic_baseline_face_24);
 
         emailInput = new EditText(LoginRegisterActivity.this);
-        setEditTextParams(emailInput,"Email",params);
+        setEditTextParams(emailInput,"Email",params, R.drawable.ic_baseline_alternate_email_24);
 
         passwordInput = new EditText(LoginRegisterActivity.this);
         passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        setEditTextParams(passwordInput,"Mot de passe",params);
+        setEditTextParams(passwordInput,"Mot de passe",params, R.drawable.ic_baseline_lock_24);
 
         passwordConfirmationInput = new EditText(LoginRegisterActivity.this);
         passwordConfirmationInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        setEditTextParams(passwordConfirmationInput,"Confirmation mot de passe",params);
+        setEditTextParams(passwordConfirmationInput,"Confirmation mot de passe",params, R.drawable.ic_baseline_lock_24);
 
         saveButton = new Button(LoginRegisterActivity.this);
         saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FCE68B")));
@@ -155,10 +155,15 @@ public class LoginRegisterActivity extends AppCompatActivity {
     // --- FONCTIONS OUTILS ---- //
 
     //Fonction créée pour éviter la redondance de code - Applique les parametres layout, ainsi que le hint
-    private void setEditTextParams(EditText editText,String hintText, LinearLayout.LayoutParams params){
-        editText.setEms(10);
+    private void setEditTextParams(EditText editText,String hintText, LinearLayout.LayoutParams params,int drawable){
+        editText.setBackgroundResource(R.drawable.field_rounded_corner_bottom_border);
+        editText.setPadding(50,editText.getPaddingTop(),100,editText.getPaddingBottom());
         editText.setLayoutParams(params);
         editText.setHint(hintText);
+        editText.setMaxLines(1);
+        editText.setFilters( new InputFilter[]{new InputFilter.LengthFilter(50)});
+        editText.setCompoundDrawablesWithIntrinsicBounds(drawable, 0,0 , 0);
+        editText.setCompoundDrawablePadding(50);
     }
 
     @Override
