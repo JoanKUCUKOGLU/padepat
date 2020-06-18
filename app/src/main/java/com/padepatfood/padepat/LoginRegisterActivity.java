@@ -12,6 +12,8 @@ import android.text.InputFilter;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -69,6 +71,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     private List<User> userList;
 
+    private Animation popAnimation;
+    private Animation fadeinAnimation;
+    private Animation fadeoutAnimation;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +108,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 Log.w("TEST", getString(R.string.read_failed), error.toException());
             }
         });
+
+        popAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.animationpop);
+        fadeinAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.fadein);
+        fadeoutAnimation = AnimationUtils.loadAnimation(LoginRegisterActivity.this, R.anim.fadeout);
+
     }
 
     //Regroupe tous les findViewById
@@ -199,11 +210,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginRegisterLinearLayout.startAnimation(fadeoutAnimation);
                 setLoginPage();
             }
         });
         goBackButton.setVisibility(View.VISIBLE);
         loginRegisterLinearLayout.addView(saveButton);
+        loginRegisterLinearLayout.startAnimation(fadeinAnimation);
         isStartPage = false;
     }
 
@@ -221,10 +234,12 @@ public class LoginRegisterActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginRegisterLinearLayout.startAnimation(fadeoutAnimation);
                 setRegisterPage();
             }
         });
         loginRegisterLinearLayout.addView(saveButton);
+        loginRegisterLinearLayout.startAnimation(fadeinAnimation);
         isStartPage = false;
     }
 
