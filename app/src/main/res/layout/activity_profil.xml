@@ -274,6 +274,19 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
+        android:id="@+id/logOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/button"
+        android:text="Déconnexion"
+        android:textColor="#000000"
+        app:iconTint="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/navBarLayout"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

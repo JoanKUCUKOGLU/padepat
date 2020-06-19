@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.baoyz.widget.PullRefreshLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private FirstAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayout navBar;
+    private FloatingActionButton filterButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        filterButton = findViewById(R.id.filterFloatingButton);
+        filterButton.setVisibility(View.INVISIBLE);
         Intent srcIntent = getIntent();
         String flagActivity = "NONE";
         if(srcIntent.hasExtra("flagActivity")){

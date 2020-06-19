@@ -35,6 +35,7 @@ public class ProfilActivity extends AppCompatActivity {
 
     private boolean isEditMode = false;
     private Button editSaveButton;
+    private Button logOutButton;
     private LinearLayout navBar;
 
     @Override
@@ -73,6 +74,7 @@ public class ProfilActivity extends AppCompatActivity {
         newPwdLayout = findViewById(R.id.newPwdLayout);
         confirmNewPwdLayout = findViewById(R.id.confirmNewPwdLayout);
         editSaveButton = findViewById(R.id.EditSavebutton);
+        logOutButton = findViewById(R.id.logOutButton);
     }
 
     //Affiche les éléments par rapport aux datas
@@ -113,6 +115,16 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 reload();
+            }
+        });
+
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                globalData.setCurrentUser(null);
+                finish();
+                Intent intent = new Intent("finish_activity");
+                sendBroadcast(intent);
             }
         });
     }
