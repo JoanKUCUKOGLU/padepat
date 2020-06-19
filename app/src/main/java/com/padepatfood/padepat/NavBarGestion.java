@@ -27,6 +27,10 @@ public class NavBarGestion {
             canStartNewProfileActivity = false;
         }
 
+        if(!g.isUserLogged()){
+            navBar.removeView(favButton);
+        }
+
         boolean finalCanStartNewHomeActivity = canStartNewHomeActivity;
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +40,8 @@ public class NavBarGestion {
                         context.startActivity(new Intent(context,MainActivity.class).putExtra("flagActivity",parentActivity).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     }else{
                         context.finish();
+                        Intent intent = new Intent("finish_activity");
+                        context.sendBroadcast(intent);
                     }
                 }
             }

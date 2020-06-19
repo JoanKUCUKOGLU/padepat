@@ -1,6 +1,7 @@
 package com.padepatfood.padepat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -323,6 +324,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
             isInConnection = true;
             setEnableToAllElements(false);
             finish();
+            Intent intent = new Intent("finish_activity");
+            sendBroadcast(intent);
         }else{
             isInConnection = false;
             setEnableToAllElements(true);
